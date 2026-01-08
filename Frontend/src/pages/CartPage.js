@@ -93,6 +93,28 @@ const CartPage = ({ onNavigateHome }) => {
                         name: customer.name,
                         contact: customer.phone,
                     },
+                    method: {
+                        upi: true,
+                        card: false,
+                        netbanking: false,
+                        wallet: false,
+                        emi: false,
+                        paylater: false,
+                    },
+                    config: {
+                        display: {
+                            blocks: [
+                                {
+                                    name: "Pay using UPI",
+                                    instruments: [{ method: "upi" }],
+                                },
+                            ],
+                            sequence: ["block.upi"],
+                            preferences: {
+                                show_default_blocks: false,
+                            },
+                        },
+                    },
                     notes: { receipt: orderData.receipt },
                     theme: { color: "#e11d48" },
                     handler: async (response) => {
