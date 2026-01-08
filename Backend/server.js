@@ -1,38 +1,52 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
 const dotenv = require("dotenv");
+const connectDB = require("./config/db");
+const pizzaRoutes = require("./routes/pizzaRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
+const port = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors()); // Enable Cross-Origin Resource Sharing
-app.use(express.json()); // To parse JSON bodies
+app.use(helmet());
+app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(",") || "*" }));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true }));
 
-// --- Database Connection ---
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB Connected...");
-  } catch (err) {
-    console.error(err.message);
-    // Exit process with failure
-    process.exit(1);
-  }
+if (process.env.NODE_ENV !== "test") {
+    app.use(morgan("dev"));
+}
+
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.use("/api/pizzas", pizzaRoutes);
+app.use("/api/orders", orderRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
+const startServer = async () => {
+    try {
+        await connectDB();
+        app.listen(port, () => {
+            console.log(`Server listening on port ${port}`);
+        });
+    } catch (error) {
+        console.error("Failed to start server", error.message);
+        process.exit(1);
+    }
 };
 
-connectDB();
+startServer();
 
-// --- API Routes ---
-app.get("/", (req, res) => res.send("PizzaSlice API Running"));
-app.use("/api/auth", require("./routes/auth"));
-
-// --- Start Server ---
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+process.on("unhandledRejection", (error) => {
+    console.error("Unhandled promise rejection", error);
+    process.exit(1);
+});

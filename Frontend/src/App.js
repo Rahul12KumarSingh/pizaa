@@ -1,77 +1,158 @@
-import React, { useState } from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import SignInPage from './pages/SignInPage';
-import RegisterPage from './pages/RegisterPage';
-import AboutUsPage from './pages/AboutUsPage';
-import ContactUsPage from './pages/ContactUsPage';
-import MenuPage from './pages/MenuPage'; // <-- Import new menu page
+import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import PizzaCard from "./components/PizzaCard";
+import CartPage from "./pages/CartPage";
+import AboutUsPage from "./pages/Aboutus";
+import ContactUsPage from "./pages/Contactus";
+import {
+  fetchPizzasRequest,
+  selectPizzas,
+  selectPizzaError,
+  selectPizzaStatus,
+} from "./store/pizzaSlice";
+import { selectCartCount } from "./store/cartSlice";
+import { ShieldCheck, Clock, MapPin, Sparkles } from "lucide-react";
 
-/* This component is no longer used, so we can remove it.
-const PlaceholderPage = ({ title }) => (
-  <div className="min-h-screen container mx-auto px-4 py-16 text-center">
-    <h1 className="text-4xl font-bold">{title}</h1>
-    <p className="mt-4 text-gray-600">This is a placeholder page. Content will be added soon!</p>
+const fallbackImage =
+  "https://images.unsplash.com/photo-1548365328-8b2184ef0536?auto=format&fit=crop&w=900&q=80";
+
+const normalizePizza = (pizza) => {
+  return {
+    id: pizza._id || pizza.id,
+    name: pizza.title || pizza.name,
+    description:
+      pizza.description,
+    image: pizza.image || fallbackImage,
+    prices: Array.isArray(pizza.prices) ? pizza.prices : [],
+    sizes: Array.isArray(pizza.sizes) ? pizza.sizes : [],
+  };
+};
+
+const HomeView = ({ pizzas, status, error, onRetry, onOpenCart }) => (
+  <div className="space-y-10 pb-12">
+    <section className="bg-gradient-to-b from-rose-600 via-rose-500 to-rose-400 text-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col gap-8">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-2 bg-white/15 px-3 py-1 rounded-full text-xs font-semibold">
+            <Sparkles className="h-4 w-4" />
+            Order local favorites in seconds
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
+            Hot, fresh, and local pizza delivered from your neighborhood shops.
+          </h1>
+          <p className="text-white/80 text-sm sm:text-base max-w-2xl">
+            Scan the QR at the shop or type the link to browse the live menu, customize your sizes, and checkout seamlessly with Razorpay.
+          </p>
+        </div>
+        <div className="grid grid-cols-3 gap-4 text-sm">
+          {[
+            "30 min avg",
+            "Live shop menus",
+            "Secure Razorpay",
+          ].map((item) => (
+            <div key={item} className="bg-white/10 rounded-xl p-3 backdrop-blur">
+              <p className="font-semibold">{item}</p>
+              <p className="text-white/70 text-xs">Reliable, mobile-first experience.</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section className="max-w-6xl mx-auto px-4 sm:px-6" id="menu">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div>
+          <p className="text-xs uppercase tracking-wide text-rose-600 font-semibold">Menu</p>
+          <h2 className="text-2xl font-bold text-slate-900">Popular choices</h2>
+        </div>
+        <div className="flex items-center gap-3 text-sm text-slate-600 flex-wrap">
+          <span className="flex items-center gap-1"><Clock className="h-4 w-4 text-rose-600" /> Fast prep</span>
+          <span className="flex items-center gap-1"><ShieldCheck className="h-4 w-4 text-rose-600" /> Secure pay</span>
+          <span className="flex items-center gap-1"><MapPin className="h-4 w-4 text-rose-600" /> Local shops</span>
+        </div>
+      </div>
+
+      {(status === "loading" || status === "idle") && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <div key={idx} className="bg-white rounded-2xl p-4 animate-pulse h-72 shadow-soft" />
+          ))}
+        </div>
+      )}
+
+      {status === "failed" && (
+        <div className="bg-white border border-rose-100 text-rose-700 rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <p className="font-semibold">Could not load pizzas.</p>
+            <p className="text-sm">{error}</p>
+          </div>
+          <button onClick={onRetry} className="px-3 py-2 bg-rose-600 text-white rounded-full text-sm font-semibold">
+            Retry
+          </button>
+        </div>
+      )}
+
+      {status === "succeeded" && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {pizzas.map((pizza) => (
+            <PizzaCard key={pizza.id || pizza._id} pizza={pizza} />
+          ))}
+        </div>
+      )}
+    </section>
   </div>
 );
-*/
 
-export default function App() {
-  const [page, setPage] = useState('home');
-  const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([]); // <-- Add cart state
+const App = () => {
+  const dispatch = useDispatch();
+  const [activeView, setActiveView] = useState("home");
+  const pizzas = useSelector(selectPizzas);
+  const status = useSelector(selectPizzaStatus);
+  const error = useSelector(selectPizzaError);
+  const cartCount = useSelector(selectCartCount);
 
-  // --- Add to Cart Logic ---
-  const handleAddToCart = (itemToAdd) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(item => item.id === itemToAdd.id);
-      
-      if (existingItem) {
-        // Update quantity
-        return prevCart.map(item => 
-          item.id === itemToAdd.id 
-            ? { ...item, quantity: item.quantity + itemToAdd.quantity } 
-            : item
-        );
-      } else {
-        // Add new item
-        return [...prevCart, itemToAdd];
-      }
-    });
-  };
+  useEffect(() => {
+    dispatch(fetchPizzasRequest());
+  }, [dispatch]);
 
-  const renderPage = () => {
-    switch (page) {
-      case 'home':
-        return <HomePage />;
-      case 'signin':
-        return <SignInPage setPage={setPage} setUser={setUser} />;
-      case 'register':
-        return <RegisterPage setPage={setPage} setUser={setUser} />;
-      case 'menu':
-        return <MenuPage onAddToCart={handleAddToCart} />; // <-- Pass handler
-      case 'about':
-        return <AboutUsPage />;
-      case 'contact':
-        return <ContactUsPage />;
-      default:
-        return <HomePage />;
+  const normalizedPizzas = useMemo(() => pizzas.map((p) => normalizePizza(p)), [pizzas]);
+
+  const renderView = () => {
+    if (activeView === "cart") {
+      return <CartPage onNavigateHome={() => setActiveView("home")} />;
     }
+    if (activeView === "about") {
+      return <AboutUsPage />;
+    }
+    if (activeView === "contact") {
+      return <ContactUsPage />;
+    }
+    return (
+      <HomeView
+        pizzas={normalizedPizzas}
+        status={status}
+        error={error}
+        onRetry={() => dispatch(fetchPizzasRequest())}
+        onOpenCart={() => setActiveView("cart")}
+      />
+    );
   };
+
+  useEffect(() => {
+    if (cartCount === 0 && activeView === "cart" && status === "succeeded") {
+      // Keep user on cart even if empty; nothing else required.
+    }
+  }, [cartCount, activeView, status]);
 
   return (
-    <div className="font-sans antialiased text-gray-800">
-      <Header 
-        setPage={setPage} 
-        user={user} 
-        setUser={setUser} 
-        cart={cart} // <-- Pass cart to header
-      />
-      <main>
-        {renderPage()}
-      </main>
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      <Header onNavigate={setActiveView} activeView={activeView} />
+      <main className="flex-1">{renderView()}</main>
       <Footer />
     </div>
   );
-}
+};
+
+export default App;
