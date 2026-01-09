@@ -9,7 +9,6 @@ const Header = ({ onNavigate, activeView }) => {
 
   const navLinks = [
     { name: "Home", page: "home" },
-    { name: "Cart", page: "cart" },
     { name: "About", page: "about" },
     { name: "Contact", page: "contact" },
   ];
@@ -30,7 +29,7 @@ const Header = ({ onNavigate, activeView }) => {
           >
             <Pizza className="h-8 w-8 text-rose-600 group-hover:rotate-12 transition" />
             <span className="text-xl font-extrabold text-slate-900 tracking-tight">
-              SliceLocal
+              PizzaSlice
             </span>
           </button>
 
@@ -40,8 +39,8 @@ const Header = ({ onNavigate, activeView }) => {
                 key={link.page}
                 onClick={() => handleNavigate(link.page)}
                 className={`text-sm font-semibold transition relative pb-1 ${activeView === link.page
-                    ? "text-rose-600"
-                    : "text-slate-600 hover:text-rose-600"
+                  ? "text-rose-600"
+                  : "text-slate-600 hover:text-rose-600"
                   }`}
               >
                 {link.name}
@@ -65,6 +64,7 @@ const Header = ({ onNavigate, activeView }) => {
                 </span>
               )}
             </button>
+
             <div className="md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -75,6 +75,7 @@ const Header = ({ onNavigate, activeView }) => {
               </button>
             </div>
           </div>
+
         </div>
       </nav>
 
@@ -86,8 +87,8 @@ const Header = ({ onNavigate, activeView }) => {
                 key={link.page}
                 onClick={() => handleNavigate(link.page)}
                 className={`block w-full text-left px-3 py-2 rounded-lg font-semibold ${activeView === link.page
-                    ? "text-rose-700 bg-rose-50"
-                    : "text-slate-700 hover:bg-slate-50"
+                  ? "text-rose-700 bg-rose-50"
+                  : "text-slate-700 hover:bg-slate-50"
                   }`}
               >
                 {link.name}

@@ -15,16 +15,13 @@ import {
 import { selectCartCount } from "./store/cartSlice";
 import { ShieldCheck, Clock, MapPin, Sparkles } from "lucide-react";
 
-const fallbackImage =
-  "https://images.unsplash.com/photo-1548365328-8b2184ef0536?auto=format&fit=crop&w=900&q=80";
-
 const normalizePizza = (pizza) => {
   return {
     id: pizza._id || pizza.id,
     name: pizza.title || pizza.name,
     description:
       pizza.description,
-    image: pizza.image || fallbackImage,
+    image: pizza.image,
     prices: Array.isArray(pizza.prices) ? pizza.prices : [],
     sizes: Array.isArray(pizza.sizes) ? pizza.sizes : [],
   };
@@ -32,8 +29,10 @@ const normalizePizza = (pizza) => {
 
 const HomeView = ({ pizzas, status, error, onRetry, onOpenCart }) => (
   <div className="space-y-10 pb-12">
+
     <section className="bg-gradient-to-b from-rose-600 via-rose-500 to-rose-400 text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col gap-8">
+
         <div className="space-y-4">
           <div className="inline-flex items-center gap-2 bg-white/15 px-3 py-1 rounded-full text-xs font-semibold">
             <Sparkles className="h-4 w-4" />
@@ -42,19 +41,17 @@ const HomeView = ({ pizzas, status, error, onRetry, onOpenCart }) => (
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
             Hot, fresh, and local pizza delivered from your neighborhood shops.
           </h1>
-          <p className="text-white/80 text-sm sm:text-base max-w-2xl">
-            Scan the QR at the shop or type the link to browse the live menu, customize your sizes, and checkout seamlessly with Razorpay.
-          </p>
         </div>
+
         <div className="grid grid-cols-3 gap-4 text-sm">
           {[
             "30 min avg",
             "Live shop menus",
-            "Secure Razorpay",
+            "Secure payment",
           ].map((item) => (
             <div key={item} className="bg-white/10 rounded-xl p-3 backdrop-blur">
               <p className="font-semibold">{item}</p>
-              <p className="text-white/70 text-xs">Reliable, mobile-first experience.</p>
+              {/* <p className="text-white/70 text-xs">Reliable, mobile-first experience.</p> */}
             </div>
           ))}
         </div>
@@ -62,16 +59,20 @@ const HomeView = ({ pizzas, status, error, onRetry, onOpenCart }) => (
     </section>
 
     <section className="max-w-6xl mx-auto px-4 sm:px-6" id="menu">
+
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+
         <div>
           <p className="text-xs uppercase tracking-wide text-rose-600 font-semibold">Menu</p>
           <h2 className="text-2xl font-bold text-slate-900">Popular choices</h2>
         </div>
+
         <div className="flex items-center gap-3 text-sm text-slate-600 flex-wrap">
           <span className="flex items-center gap-1"><Clock className="h-4 w-4 text-rose-600" /> Fast prep</span>
           <span className="flex items-center gap-1"><ShieldCheck className="h-4 w-4 text-rose-600" /> Secure pay</span>
           <span className="flex items-center gap-1"><MapPin className="h-4 w-4 text-rose-600" /> Local shops</span>
         </div>
+
       </div>
 
       {(status === "loading" || status === "idle") && (

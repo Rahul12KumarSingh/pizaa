@@ -65,6 +65,7 @@ const createRazorpayOrder = async (req, res, next) => {
         }
 
         const receipt = buildReadableId("RZP");
+
         const order = await createRazorpayOrderService({
             amount: amountInPaise,
             currency: "INR",
@@ -175,6 +176,7 @@ const createOrderFromPayment = async (req, res, next) => {
                 receipt: receiptNumber,
             },
         });
+
     } catch (error) {
         return next(error);
     }

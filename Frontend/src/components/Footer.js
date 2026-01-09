@@ -7,14 +7,17 @@ const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4 space-y-6">
+
             <div className="flex items-center space-x-2">
               <Pizza className="h-8 w-8 text-red-500" />
               <span className="text-2xl font-bold">PizzaSlice</span>
             </div>
+
             <p className="text-gray-400 text-sm max-w-sm">
               Delivering happiness, one slice at a time. The best ingredients
               for the best pizza.
             </p>
+
             <div className="flex space-x-4">
               <a
                 href="#"
@@ -41,7 +44,9 @@ const Footer = () => {
                 <Linkedin size={20} />
               </a>
             </div>
+
           </div>
+
           <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-lg font-semibold tracking-wider uppercase">
@@ -136,7 +141,7 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            <div>
+            {/* <div>
               <h3 className="text-lg font-semibold tracking-wider uppercase">
                 Newsletter
               </h3>
@@ -166,7 +171,7 @@ const Footer = () => {
                   </svg>
                 </button>
               </form>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">

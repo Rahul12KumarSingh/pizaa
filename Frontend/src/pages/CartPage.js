@@ -8,7 +8,7 @@ import {
     selectCartItems,
     selectCartTotal,
 } from "../store/cartSlice";
-import { ShoppingBag, Minus, Plus, ArrowLeft } from "lucide-react";
+import { ShoppingBag, Minus, Plus, ArrowLeft, Trash2 } from "lucide-react";
 import api from "../services/api";
 
 const loadRazorpay = () => {
@@ -30,6 +30,7 @@ const CartPage = ({ onNavigateHome }) => {
     const dispatch = useDispatch();
     const items = useSelector(selectCartItems);
     const total = useSelector(selectCartTotal);
+
     const [customer, setCustomer] = useState({ name: "", phone: "" });
     const [status, setStatus] = useState({ loading: false, success: "", error: "" });
 
@@ -49,7 +50,8 @@ const CartPage = ({ onNavigateHome }) => {
 
     const handleCheckout = async (e) => {
         e.preventDefault();
-        const validationError = validate();
+        const validationError = validate();// phone number validation..
+
         if (validationError) {
             setStatus({ loading: false, success: "", error: validationError });
             return;
@@ -64,6 +66,7 @@ const CartPage = ({ onNavigateHome }) => {
 
         try {
             const sdkLoaded = await loadRazorpay();
+
             if (!sdkLoaded || !window.Razorpay) {
                 setStatus({ loading: false, success: "", error: "Unable to load Razorpay SDK. Please retry." });
                 return;
@@ -92,28 +95,6 @@ const CartPage = ({ onNavigateHome }) => {
                     prefill: {
                         name: customer.name,
                         contact: customer.phone,
-                    },
-                    method: {
-                        upi: true,
-                        card: false,
-                        netbanking: false,
-                        wallet: false,
-                        emi: false,
-                        paylater: false,
-                    },
-                    config: {
-                        display: {
-                            blocks: [
-                                {
-                                    name: "Pay using UPI",
-                                    instruments: [{ method: "upi" }],
-                                },
-                            ],
-                            sequence: ["block.upi"],
-                            preferences: {
-                                show_default_blocks: false,
-                            },
-                        },
                     },
                     notes: { receipt: orderData.receipt },
                     theme: { color: "#e11d48" },
@@ -179,6 +160,7 @@ const CartPage = ({ onNavigateHome }) => {
 
     return (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+
             <div className="flex items-center gap-2 mb-6">
                 <button
                     onClick={onNavigateHome}
@@ -186,6 +168,7 @@ const CartPage = ({ onNavigateHome }) => {
                 >
                     <ArrowLeft className="h-4 w-4 mr-1" /> Back
                 </button>
+
                 <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                     <ShoppingBag className="h-5 w-5 text-rose-600" /> Your Cart
                 </h2>
@@ -227,6 +210,7 @@ const CartPage = ({ onNavigateHome }) => {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
+
                                     <button
                                         onClick={() => dispatch(decrementItem({ id: item.id, size: item.size }))}
                                         className="h-9 w-9 flex items-center justify-center rounded-full border border-slate-200 text-slate-700"
@@ -234,7 +218,9 @@ const CartPage = ({ onNavigateHome }) => {
                                     >
                                         <Minus className="h-4 w-4" />
                                     </button>
+
                                     <span className="text-sm font-semibold w-6 text-center">{item.quantity}</span>
+
                                     <button
                                         onClick={() => dispatch(addItem({ ...item }))}
                                         className="h-9 w-9 flex items-center justify-center rounded-full bg-rose-600 text-white"
@@ -242,11 +228,13 @@ const CartPage = ({ onNavigateHome }) => {
                                     >
                                         <Plus className="h-4 w-4" />
                                     </button>
+
                                     <button
                                         onClick={() => dispatch(removeItem({ id: item.id, size: item.size }))}
-                                        className="text-xs font-semibold text-rose-600 ml-2"
+                                        className="ml-2 h-9 w-9 flex items-center justify-center rounded-full border border-transparent text-rose-600 hover:bg-rose-50"
+                                        aria-label="Remove item"
                                     >
-                                        Remove
+                                        <Trash2 className="h-4 w-4" />
                                     </button>
                                 </div>
                             </div>
@@ -258,7 +246,7 @@ const CartPage = ({ onNavigateHome }) => {
                             <span className="text-sm text-slate-600">Subtotal</span>
                             <span className="text-lg font-bold text-slate-900">₹{formattedTotal}</span>
                         </div>
-                        <div className="text-xs text-slate-500">Taxes will be calculated during payment.</div>
+
                         <form onSubmit={handleCheckout} className="space-y-3">
                             <div>
                                 <label className="text-xs font-semibold text-slate-600">Name</label>
@@ -272,6 +260,7 @@ const CartPage = ({ onNavigateHome }) => {
                                     required
                                 />
                             </div>
+
                             <div>
                                 <label className="text-xs font-semibold text-slate-600">Mobile number</label>
                                 <input
@@ -284,6 +273,7 @@ const CartPage = ({ onNavigateHome }) => {
                                     required
                                 />
                             </div>
+
                             <button
                                 type="submit"
                                 disabled={status.loading}
@@ -292,11 +282,13 @@ const CartPage = ({ onNavigateHome }) => {
                                 {status.loading ? "Processing..." : `Pay ₹${formattedTotal}`}
                             </button>
                         </form>
+
                         {status.error && (
                             <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg p-3">
                                 {status.error}
                             </div>
                         )}
+
                         {status.success && (
                             <div className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg p-3">
                                 {status.success}

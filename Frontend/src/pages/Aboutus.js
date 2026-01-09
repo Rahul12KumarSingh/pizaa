@@ -6,11 +6,11 @@ const AboutUsPage = () => {
     <div className="bg-white">
       {/* Hero Section */}
       <div className="relative h-96 bg-gray-800">
-        <img
-          src="https://placehold.co/1920x800/f87171/ffffff?text=Our+Kitchen"
+        {/* <img
+          src="https://placehold.co/1920x800/f87171/ffffff"
           alt="Our Pizzeria"
           className="w-full h-full object-cover opacity-40"
-        />
+        /> */}
         <div className="absolute inset-0 flex items-center justify-center">
           <h1 className="text-5xl md:text-7xl font-extrabold text-white text-center tracking-tight animate-fade-in-down">
             About PizzaSlice

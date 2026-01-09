@@ -80,6 +80,7 @@ const PizzaCard = ({ pizza }) => {
                         {pizza.description}
                     </p>
                 </div>
+
                 <div className="flex gap-2 mt-auto">
                     {sizes.map((size, idx) => (
                         <button
@@ -95,6 +96,7 @@ const PizzaCard = ({ pizza }) => {
                         </button>
                     ))}
                 </div>
+
                 <div className="flex items-center gap-2">
                     {!isOrderable ? (
                         <span className="w-full text-center text-sm font-semibold text-slate-500 bg-slate-100 rounded-full py-3">
