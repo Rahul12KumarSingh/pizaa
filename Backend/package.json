@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "deploy:lambda": "npx serverless deploy"
   },
   "keywords": [],
   "author": "",
@@ -20,9 +21,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.2",
     "morgan": "^1.10.0",
-    "razorpay": "^2.9.3"
+    "razorpay": "^2.9.3",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "serverless": "^3.38.0",
+    "serverless-dotenv-plugin": "^4.0.2"
   }
 }

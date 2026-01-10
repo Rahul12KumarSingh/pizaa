@@ -37,6 +37,25 @@ npm start      # runs with node
 
 The service exposes a health-check at `GET /health`.
 
+## Deploying to AWS Lambda (Serverless Framework)
+
+This repo ships with a `serverless.yml` that packages the Express API into an AWS Lambda function behind HTTP API Gateway.
+
+1. Ensure you have AWS credentials configured for the target account (`aws configure`).
+2. Provide the required secrets either by:
+  - keeping them in `.env` (the Serverless dotenv plugin loads them automatically), or
+  - storing them in AWS SSM Parameter Store under `/pizzaslice/<stage>/MONGO_URI` (similar paths for the Razorpay keys).
+3. Install dependencies (only needed once):
+
+  ```bash
+  npm install
+  npm run deploy:lambda        # uses npx serverless deploy under the hood
+  ```
+
+The deployment creates a single `api` Lambda function (Node.js 18) with 512 MB memory, 15 second timeout, and CORS-enabled HTTP API. Subsequent invocations reuse the MongoDB connection thanks to the cached connector in `config/db.js`.
+
+> **Tip:** For staging/production, override the stage via `npm run deploy:lambda -- --stage prod`. Secrets lookups cascade in this order: SSM parameter (if present) → local `.env` → shell env vars.
+
 ## Data Models
 
 - **Pizza**: `title`, `description`, `prices[]`, `sizes[]`, `image`, `isAvailable`
