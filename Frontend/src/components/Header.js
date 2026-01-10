@@ -2,28 +2,25 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Pizza, ShoppingCart, Menu, X } from "lucide-react";
 import { selectCartCount } from "../store/cartSlice";
+import { NavLink, Link } from "react-router-dom";
 
-const Header = ({ onNavigate, activeView }) => {
+const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const cartCount = useSelector(selectCartCount);
 
   const navLinks = [
-    { name: "Home", page: "home" },
-    { name: "About", page: "about" },
-    { name: "Contact", page: "contact" },
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
   ];
-
-  const handleNavigate = (page) => {
-    onNavigate(page);
-    setIsMobileMenuOpen(false);
-  };
 
   return (
     <header className="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50 border-b border-slate-100">
       <nav className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          <button
-            onClick={() => handleNavigate("home")}
+          <Link
+            to="/"
+            onClick={() => setIsMobileMenuOpen(false)}
             className="flex items-center space-x-2 group"
             aria-label="Go to home"
           >
@@ -31,29 +28,37 @@ const Header = ({ onNavigate, activeView }) => {
             <span className="text-xl font-extrabold text-slate-900 tracking-tight">
               PizzaSlice
             </span>
-          </button>
+          </Link>
 
           <div className="hidden md:flex md:items-center md:space-x-6">
             {navLinks.map((link) => (
-              <button
-                key={link.page}
-                onClick={() => handleNavigate(link.page)}
-                className={`text-sm font-semibold transition relative pb-1 ${activeView === link.page
-                  ? "text-rose-600"
-                  : "text-slate-600 hover:text-rose-600"
-                  }`}
+              <NavLink
+                key={link.path}
+                to={link.path}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `text-sm font-semibold transition relative pb-1 ${isActive
+                    ? "text-rose-600"
+                    : "text-slate-600 hover:text-rose-600"
+                  }`
+                }
               >
-                {link.name}
-                {activeView === link.page && (
-                  <span className="absolute left-0 bottom-0 h-0.5 w-full bg-rose-600 rounded-full"></span>
+                {({ isActive }) => (
+                  <>
+                    {link.name}
+                    {isActive && (
+                      <span className="absolute left-0 bottom-0 h-0.5 w-full bg-rose-600 rounded-full"></span>
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
             ))}
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => handleNavigate("cart")}
+            <Link
+              to="/cart"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="relative p-2 rounded-full border border-slate-200 text-slate-700 hover:border-rose-200 hover:text-rose-700 transition"
               aria-label="Open cart"
             >
@@ -63,7 +68,7 @@ const Header = ({ onNavigate, activeView }) => {
                   {cartCount}
                 </span>
               )}
-            </button>
+            </Link>
 
             <div className="md:hidden">
               <button
@@ -83,16 +88,19 @@ const Header = ({ onNavigate, activeView }) => {
         <div className="md:hidden bg-white border-t border-slate-100 shadow-sm">
           <div className="px-4 py-3 space-y-1">
             {navLinks.map((link) => (
-              <button
-                key={link.page}
-                onClick={() => handleNavigate(link.page)}
-                className={`block w-full text-left px-3 py-2 rounded-lg font-semibold ${activeView === link.page
-                  ? "text-rose-700 bg-rose-50"
-                  : "text-slate-700 hover:bg-slate-50"
-                  }`}
+              <NavLink
+                key={link.path}
+                to={link.path}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block w-full text-left px-3 py-2 rounded-lg font-semibold ${isActive
+                    ? "text-rose-700 bg-rose-50"
+                    : "text-slate-700 hover:bg-slate-50"
+                  }`
+                }
               >
                 {link.name}
-              </button>
+              </NavLink>
             ))}
           </div>
         </div>

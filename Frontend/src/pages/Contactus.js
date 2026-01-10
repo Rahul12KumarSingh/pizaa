@@ -69,8 +69,7 @@ const ContactUsPage = () => {
               <div>
                 <h3 className="font-semibold text-lg">Our Address</h3>
                 <p className="text-gray-600">
-                  123 Pizza Street, Park Street Area, Kolkata, West Bengal
-                  700016
+                  Santorini Flavours , Shop No. 7, London Street , Moonland Bae , Snow Yard ,Kinshangarh(Rajasthan)- 305801
                 </p>
               </div>
             </div>
@@ -80,7 +79,7 @@ const ContactUsPage = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-lg">Call Us</h3>
-                <p className="text-gray-600">+91 98765 43210</p>
+                <p className="text-gray-600">+91 9799 760328</p>
               </div>
             </div>
             <div className="flex items-start space-x-4">
@@ -89,7 +88,7 @@ const ContactUsPage = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-lg">Email Us</h3>
-                <p className="text-gray-600">contact@pizzaslice.com</p>
+                <p className="text-gray-600">Jaincreations48@gmail.com</p>
               </div>
             </div>
           </div>
@@ -133,22 +132,6 @@ const ContactUsPage = () => {
                     onChange={handleChange}
                   />
                 </div>
-              </div>
-              <div className="mt-6">
-                <label
-                  htmlFor="subject"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  id="subject"
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
-                  value={formData.subject}
-                  onChange={handleChange}
-                />
               </div>
               <div className="mt-6">
                 <label

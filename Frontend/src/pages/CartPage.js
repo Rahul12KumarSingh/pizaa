@@ -9,6 +9,7 @@ import {
     selectCartTotal,
 } from "../store/cartSlice";
 import { ShoppingBag, Minus, Plus, ArrowLeft, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
 import api from "../services/api";
 
 const loadRazorpay = () => {
@@ -281,6 +282,13 @@ const CartPage = ({ onNavigateHome }) => {
                             >
                                 {status.loading ? "Processing..." : `Pay ₹${formattedTotal}`}
                             </button>
+                            <p className="text-xs text-slate-500 leading-relaxed text-center sm:text-left">
+                                By placing this order you agree to our
+                                <Link to="/terms-and-conditions" className="text-rose-600 font-semibold underline ml-1">
+                                    Terms & Conditions
+                                </Link>
+                                .
+                            </p>
                         </form>
 
                         {status.error && (

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -6,13 +6,16 @@ import PizzaCard from "./components/PizzaCard";
 import CartPage from "./pages/CartPage";
 import AboutUsPage from "./pages/Aboutus";
 import ContactUsPage from "./pages/Contactus";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import RefundPolicy from "./pages/RefundPolicy";
+import Terms from "./pages/Terms";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import {
   fetchPizzasRequest,
   selectPizzas,
   selectPizzaError,
   selectPizzaStatus,
 } from "./store/pizzaSlice";
-import { selectCartCount } from "./store/cartSlice";
 import { ShieldCheck, Clock, MapPin, Sparkles } from "lucide-react";
 
 const normalizePizza = (pizza) => {
@@ -108,11 +111,10 @@ const HomeView = ({ pizzas, status, error, onRetry, onOpenCart }) => (
 
 const App = () => {
   const dispatch = useDispatch();
-  const [activeView, setActiveView] = useState("home");
   const pizzas = useSelector(selectPizzas);
   const status = useSelector(selectPizzaStatus);
   const error = useSelector(selectPizzaError);
-  const cartCount = useSelector(selectCartCount);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchPizzasRequest());
@@ -120,37 +122,30 @@ const App = () => {
 
   const normalizedPizzas = useMemo(() => pizzas.map((p) => normalizePizza(p)), [pizzas]);
 
-  const renderView = () => {
-    if (activeView === "cart") {
-      return <CartPage onNavigateHome={() => setActiveView("home")} />;
-    }
-    if (activeView === "about") {
-      return <AboutUsPage />;
-    }
-    if (activeView === "contact") {
-      return <ContactUsPage />;
-    }
-    return (
-      <HomeView
-        pizzas={normalizedPizzas}
-        status={status}
-        error={error}
-        onRetry={() => dispatch(fetchPizzasRequest())}
-        onOpenCart={() => setActiveView("cart")}
-      />
-    );
-  };
-
-  useEffect(() => {
-    if (cartCount === 0 && activeView === "cart" && status === "succeeded") {
-      // Keep user on cart even if empty; nothing else required.
-    }
-  }, [cartCount, activeView, status]);
+  const homeElement = (
+    <HomeView
+      pizzas={normalizedPizzas}
+      status={status}
+      error={error}
+      onRetry={() => dispatch(fetchPizzasRequest())}
+      onOpenCart={() => navigate("/cart")}
+    />
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      <Header onNavigate={setActiveView} activeView={activeView} />
-      <main className="flex-1">{renderView()}</main>
+      <Header />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={homeElement} />
+          <Route path="/cart" element={<CartPage onNavigateHome={() => navigate("/")} />} />
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/contact" element={<ContactUsPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/terms-and-conditions" element={<Terms />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   );

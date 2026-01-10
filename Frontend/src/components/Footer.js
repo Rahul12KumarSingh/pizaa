@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Pizza, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
 const Footer = () => {
@@ -54,36 +55,21 @@ const Footer = () => {
               </h3>
               <ul className="mt-4 space-y-3 text-sm">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/about"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     About Us
-                  </a>
+                  </Link>
                 </li>
+
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Our Menu
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Store Locator
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -93,28 +79,12 @@ const Footer = () => {
               </h3>
               <ul className="mt-4 space-y-3 text-sm">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/contact"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    FAQ
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Allergen Info
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -124,54 +94,32 @@ const Footer = () => {
               </h3>
               <ul className="mt-4 space-y-3 text-sm">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/terms-and-conditions"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Terms of Service
-                  </a>
+                    Terms & Conditions
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/privacy-policy"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Privacy Policy
-                  </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/refund-policy"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Refund Policy
+                  </Link>
                 </li>
               </ul>
             </div>
-            {/* <div>
-              <h3 className="text-lg font-semibold tracking-wider uppercase">
-                Newsletter
-              </h3>
-              <p className="mt-4 text-gray-400 text-sm">
-                Get the latest deals and updates.
-              </p>
-              <form className="mt-4 flex">
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full px-3 py-2 text-gray-800 rounded-l-md focus:outline-none"
-                />
-                <button className="bg-red-600 hover:bg-red-700 p-2 rounded-r-md">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 5l7 7-7 7M5 12h14"
-                    />
-                  </svg>
-                </button>
-              </form>
-            </div> */}
+
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
