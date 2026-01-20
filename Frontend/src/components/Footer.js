@@ -11,7 +11,7 @@ const Footer = () => {
 
             <div className="flex items-center space-x-2">
               <Pizza className="h-8 w-8 text-red-500" />
-              <span className="text-2xl font-bold">PizzaSlice</span>
+              <span className="text-2xl font-bold">Santorini flavours</span>
             </div>
 
             <p className="text-gray-400 text-sm max-w-sm">
@@ -124,7 +124,7 @@ const Footer = () => {
         </div>
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
           <p>
-            &copy; {new Date().getFullYear()} PizzaSlice Inc. All rights
+            &copy; {new Date().getFullYear()} Santorini flavours Inc. All rights
             reserved.
           </p>
         </div>

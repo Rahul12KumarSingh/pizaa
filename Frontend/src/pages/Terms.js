@@ -8,7 +8,7 @@ const Terms = () => {
             </h1>
 
             <p className="text-slate-600 mb-4">
-                By accessing and using the PizzaSlice website or placing an order
+                By accessing and using the Santorini flavours website or placing an order
                 through our platform, you agree to comply with the following terms
                 and conditions. Please read them carefully.
             </p>

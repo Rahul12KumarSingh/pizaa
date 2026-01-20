@@ -26,7 +26,7 @@ const Header = () => {
           >
             <Pizza className="h-8 w-8 text-rose-600 group-hover:rotate-12 transition" />
             <span className="text-xl font-extrabold text-slate-900 tracking-tight">
-              PizzaSlice
+              Santorini flavours
             </span>
           </Link>
 

@@ -1,7 +1,7 @@
 {
   "name": "pizzaslice-backend",
   "version": "1.0.0",
-  "description": "Backend for the PizzaSlice React application.",
+  "description": "Backend for the Santorini flavours React application.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

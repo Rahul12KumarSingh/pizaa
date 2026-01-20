@@ -13,7 +13,7 @@ const AboutUsPage = () => {
         /> */}
         <div className="absolute inset-0 flex items-center justify-center">
           <h1 className="text-5xl md:text-7xl font-extrabold text-white text-center tracking-tight animate-fade-in-down">
-            About PizzaSlice
+            About Santorini flavours
           </h1>
         </div>
       </div>
@@ -26,7 +26,7 @@ const AboutUsPage = () => {
               Our Story: A Passion for Perfection
             </h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              PizzaSlice was born from a simple idea in a small kitchen in
+              Santorini flavours was born from a simple idea in a small kitchen in
               Kolkata: to create the most delicious pizza using only the
               freshest, locally-sourced ingredients. What started as a family's
               passion project quickly grew into a beloved local eatery, known

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addItem,
@@ -8,9 +8,13 @@ import {
     selectCartItems,
     selectCartTotal,
 } from "../store/cartSlice";
-import { ShoppingBag, Minus, Plus, ArrowLeft, Trash2 } from "lucide-react";
+import { ShoppingBag, Minus, Plus, ArrowLeft, Trash2, Download, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
+import { generateReceiptPDF } from "../utils/generateReceipt";
+
+const BRAND_NAME = "Santorini flavours";
+const LOGO_URL = `${process.env.PUBLIC_URL}/assets/Logo.ico`;
 
 const loadRazorpay = () => {
     if (document.getElementById("razorpay-sdk")) {
@@ -33,9 +37,16 @@ const CartPage = ({ onNavigateHome }) => {
     const total = useSelector(selectCartTotal);
 
     const [customer, setCustomer] = useState({ name: "", phone: "" });
+    const [receiptData, setReceiptData] = useState(null);
     const [status, setStatus] = useState({ loading: false, success: "", error: "" });
 
     const formattedTotal = useMemo(() => total.toFixed(2), [total]);
+
+    useEffect(() => {
+        if (receiptData) {
+            generateReceiptPDF(receiptData);
+        }
+    }, [receiptData]);
 
     const handleFieldChange = (e) => {
         const { name, value } = e.target;
@@ -91,7 +102,7 @@ const CartPage = ({ onNavigateHome }) => {
                     amount: orderData.amount,
                     currency: orderData.currency,
                     order_id: orderData.razorpayOrderId,
-                    name: "SliceLocal Pizzeria",
+                    name: BRAND_NAME,
                     description: "Order payment",
                     prefill: {
                         name: customer.name,
@@ -115,6 +126,25 @@ const CartPage = ({ onNavigateHome }) => {
                             });
 
                             const receipt = paymentResponse?.data?.receipt || orderData.receipt;
+                            const orderId = paymentResponse?.data?.order?._id || orderData.razorpayOrderId;
+
+                            // Store receipt data for PDF generation
+                            setReceiptData({
+                                orderId,
+                                receipt,
+                                customerName: customer.name,
+                                customerMobileNumber: customer.phone,
+                                items: items.map(item => ({
+                                    name: item.name,
+                                    size: item.size,
+                                    quantity: item.quantity,
+                                    price: item.price,
+                                })),
+                                totalAmount: total,
+                                shopName: BRAND_NAME,
+                                logoUrl: LOGO_URL,
+                            });
+
                             dispatch(clearCart());
                             setCustomer({ name: "", phone: "" });
                             setStatus({
@@ -123,7 +153,6 @@ const CartPage = ({ onNavigateHome }) => {
                                 error: "",
                             });
                             resolve();
-                            onNavigateHome?.();
                         } catch (confirmError) {
                             setStatus({
                                 loading: false,
@@ -298,8 +327,29 @@ const CartPage = ({ onNavigateHome }) => {
                         )}
 
                         {status.success && (
-                            <div className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg p-3">
-                                {status.success}
+                            <div className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg p-3 space-y-3">
+                                <div className="flex items-center gap-2">
+                                    <CheckCircle className="h-5 w-5 text-green-600" />
+                                    <span>{status.success}</span>
+                                </div>
+                                {receiptData && (
+                                    <button
+                                        onClick={() => generateReceiptPDF(receiptData)}
+                                        className="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition"
+                                    >
+                                        <Download className="h-4 w-4" />
+                                        Download Receipt (PDF)
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => {
+                                        setReceiptData(null);
+                                        onNavigateHome?.();
+                                    }}
+                                    className="w-full bg-slate-200 text-slate-700 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"
+                                >
+                                    Continue Shopping
+                                </button>
                             </div>
                         )}
                     </div>

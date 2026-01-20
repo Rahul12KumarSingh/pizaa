@@ -1,6 +1,6 @@
-# PizzaSlice Backend
+# Santorini flavours Backend
 
-Node.js + Express + MongoDB service that powers the PizzaSlice ordering experience. It exposes secure endpoints for managing pizzas, handling Razorpay payments, and tracking order fulfillment states.
+Node.js + Express + MongoDB service that powers the Santorini flavours ordering experience. It exposes secure endpoints for managing pizzas, handling Razorpay payments, and tracking order fulfillment states.
 
 ## Prerequisites
 

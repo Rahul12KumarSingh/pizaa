@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
 
             <p className="text-slate-600 mb-4">
                 We value your privacy and are committed to protecting your personal
-                information. This Privacy Policy explains how PizzaSlice collects,
+                information. This Privacy Policy explains how Santorini flavours collects,
                 uses, and safeguards your data when you place orders through our website
                 or visit our shop.
             </p>
