@@ -69,7 +69,7 @@ const CartPage = ({ onNavigateHome }) => {
             return;
         }
         const orderItemsPayload = items.map((item) => ({
-            pizzaId: item.id,
+            productId: item.id,
             size: item.size,
             quantity: item.quantity,
         }));
@@ -110,6 +110,20 @@ const CartPage = ({ onNavigateHome }) => {
                     },
                     notes: { receipt: orderData.receipt },
                     theme: { color: "#e11d48" },
+                    config: {
+                        display: {
+                            blocks: {
+                                upi: {
+                                    name: "Pay via UPI",
+                                    instruments: [
+                                        { method: "upi", flows: ["qr", "collect", "intent"] }
+                                    ]
+                                }
+                            },
+                            sequence: ["block.upi"],
+                            preferences: { show_default_blocks: false }
+                        }
+                    },
                     handler: async (response) => {
                         try {
                             const { data: paymentResponse } = await api.post("/orders/payment", {

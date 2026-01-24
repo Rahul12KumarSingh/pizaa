@@ -27,7 +27,7 @@ const AboutUsPage = () => {
             </h2>
             <p className="text-gray-600 leading-relaxed mb-4">
               Santorini flavours was born from a simple idea in a small kitchen in
-              Kolkata: to create the most delicious pizza using only the
+              Kinshangarh(Rajasthan): to create the most delicious pizza using only the
               freshest, locally-sourced ingredients. What started as a family's
               passion project quickly grew into a beloved local eatery, known
               for its authentic taste and commitment to quality.
@@ -86,7 +86,7 @@ const AboutUsPage = () => {
                 Service with a Smile
               </h3>
               <p className="text-gray-600">
-                From our kitchen to your door, we're dedicated to providing a
+                From our kitchen to your Seat, we're dedicated to providing a
                 fast and friendly experience.
               </p>
             </div>

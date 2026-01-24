@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_BASE_URL || "https://z1dmaj0sqa.execute-api.ap-south-1.amazonaws.com/api",
+    baseURL: process.env.REACT_APP_API_BASE_URL ||  "https://z1dmaj0sqa.execute-api.ap-south-1.amazonaws.com/api",
     timeout: 10000,
 });
 
