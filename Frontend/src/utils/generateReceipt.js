@@ -22,7 +22,6 @@ export const generateReceiptPDF = (receiptData) => {
     });
 
     const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
     let yPosition = 15;
 
     // Set fonts

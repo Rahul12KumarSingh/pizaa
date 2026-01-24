@@ -20,30 +20,34 @@ const Footer = () => {
             </p>
 
             <div className="flex space-x-4">
-              <a
-                href="#"
+              <button
+                type="button"
+                aria-label="Facebook"
                 className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
               >
                 <Facebook size={20} />
-              </a>
-              <a
-                href="#"
+              </button>
+              <button
+                type="button"
+                aria-label="Twitter"
                 className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
               >
                 <Twitter size={20} />
-              </a>
-              <a
-                href="#"
+              </button>
+              <button
+                type="button"
+                aria-label="Instagram"
                 className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
               >
                 <Instagram size={20} />
-              </a>
-              <a
-                href="#"
+              </button>
+              <button
+                type="button"
+                aria-label="Linkedin"
                 className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
               >
                 <Linkedin size={20} />
-              </a>
+              </button>
             </div>
 
           </div>
