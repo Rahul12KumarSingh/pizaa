@@ -34,3 +34,9 @@ Backend/*.zip
 Frontend/node_modules/
 Frontend/.env
 Frontend/.env.*
+
+# Admin Dashboard specific ignores
+adminDashboard/node_modules/
+adminDashboard/.env
+adminDashboard/.env.*
+adminDashboard/build/
