@@ -21,3 +21,16 @@ Thumbs.db
 
 # Editor directories
 .vscode/
+
+
+# Backend specific ignores
+Backend/node_modules/
+Backend/.env
+Backend/.env.*
+Backend/*.zip
+*.zip
+
+# Frontend specific ignores
+Frontend/node_modules/
+Frontend/.env
+Frontend/.env.*

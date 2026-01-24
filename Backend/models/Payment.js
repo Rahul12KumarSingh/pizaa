@@ -37,9 +37,6 @@ const paymentSchema = new mongoose.Schema(
     method: {
       type: String,
     },
-    email: {
-      type: String,
-    },
     contact: {
       type: String,
     },

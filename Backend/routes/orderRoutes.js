@@ -3,7 +3,6 @@ const { body, param, query } = require("express-validator");
 const {
     createRazorpayOrder,
     createOrderFromPayment,
-    // getProgressOrdersSummary,
     getProgressOrders,
     markOrderDelivered,
     getOrdersByDate,
@@ -22,10 +21,8 @@ router.post(
             .matches(/^[0-9]{10}$/)
             .withMessage("Customer mobile number must be a valid 10 digit number"),
         body("items").isArray({ min: 1 }).withMessage("Items array is required"),
-        body("items.*.pizzaId").isMongoId().withMessage("Each item must include a valid pizzaId"),
-        body("items.*.size")
-            .isIn(["small", "medium", "large"])
-            .withMessage("Each item size must be small, medium, or large"),
+        body("items.*.productId").isMongoId().withMessage("Each item must include a valid productId"),
+        body("items.*.size").optional().isString().trim().withMessage("Size must be a string"),
         body("items.*.quantity").optional().isInt({ min: 1 }).withMessage("Quantity must be at least 1"),
     ],
     validateRequest,
@@ -45,17 +42,13 @@ router.post(
             .matches(/^[0-9]{10}$/)
             .withMessage("Customer mobile number must be a valid 10 digit number"),
         body("items").isArray({ min: 1 }).withMessage("Items array is required"),
-        body("items.*.pizzaId").isMongoId().withMessage("Each item must include a valid pizzaId"),
-        body("items.*.size")
-            .isIn(["small", "medium", "large"])
-            .withMessage("Each item size must be small, medium, or large"),
+        body("items.*.productId").isMongoId().withMessage("Each item must include a valid productId"),
+        body("items.*.size").optional().isString().trim().withMessage("Size must be a string"),
         body("items.*.quantity").optional().isInt({ min: 1 }).withMessage("Quantity must be at least 1"),
     ],
     validateRequest,
     createOrderFromPayment
 );
-
-// router.get("/progress/summary", getProgressOrdersSummary);
 
 router.get(
     "/progress",

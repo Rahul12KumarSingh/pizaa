@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const pizzaRoutes = require("./routes/pizzaRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
@@ -22,7 +23,8 @@ const buildApp = () => {
         res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
     });
 
-    app.use("/api/pizzas", pizzaRoutes);
+    app.use("/api/categories", categoryRoutes);
+    app.use("/api/products", productRoutes);
     app.use("/api/orders", orderRoutes);
 
     app.use(notFound);

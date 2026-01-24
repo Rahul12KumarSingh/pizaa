@@ -3,19 +3,22 @@ const { ORDER_STATUS } = require("../constants/orderStatus");
 
 const orderItemSchema = new mongoose.Schema(
   {
-    pizza: {
+    product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Pizza",
+      ref: "Product",
       required: true,
     },
     title: {
       type: String,
       required: true,
     },
+    // Flexible size field - supports any size label (small, medium, large, regular, jumbo, etc.)
+    // Null for single-price items without size variants
     size: {
       type: String,
-      enum: ["small", "medium", "large"],
-      required: true,
+      trim: true,
+      lowercase: true,
+      default: null,
     },
     price: {
       type: Number,

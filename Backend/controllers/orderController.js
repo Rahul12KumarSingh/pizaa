@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const Order = require("../models/Order");
 const Payment = require("../models/Payment");
-const Pizza = require("../models/Pizza");
+const Product = require("../models/Product");
 const { ORDER_STATUS, PROGRESS_STATUSES } = require("../constants/orderStatus");
 const { buildReadableId } = require("../utils/id");
 const { createRazorpayOrder: createRazorpayOrderService } = require("../services/razorpayService");
@@ -18,31 +18,61 @@ const verifySignature = ({ orderId, paymentId, signature, secret }) => {
     return expectedSignature === signature;
 };
 
-const materializeOrderItems = (items, pizzaMap) => {
+/**
+ * Materialize order items from product IDs
+ * Supports both single-price products and variant-based products
+ */
+const materializeOrderItems = (items, productMap) => {
     if (!Array.isArray(items) || items.length === 0) {
         throw buildHttpError(400, "At least one item is required to create an order");
     }
+
     let totalAmount = 0;
     const hydratedItems = items.map((item) => {
-        const pizza = pizzaMap.get(item.pizzaId);
-        if (!pizza) {
-            throw buildHttpError(400, `Pizza item ${item.pizzaId} not found or unavailable`);
+        const product = productMap.get(item.productId);
+        if (!product) {
+            throw buildHttpError(400, `Product ${item.productId} not found or unavailable`);
         }
-        const sizeIndex = pizza.sizes.findIndex((size) => size === item.size);
-        if (sizeIndex === -1) {
-            throw buildHttpError(400, `Size ${item.size} is not offered for ${pizza.title}`);
-        }
+
         const quantity = item.quantity && item.quantity > 0 ? item.quantity : 1;
-        const unitPrice = pizza.prices[sizeIndex];
+        let unitPrice;
+        let size = null;
+
+        // Check if product has variants (size-based pricing)
+        if (product.variants && product.variants.length > 0) {
+            if (!item.size) {
+                throw buildHttpError(400, `Size is required for ${product.title}`);
+            }
+
+            const variant = product.variants.find(
+                (v) => v.size.toLowerCase() === item.size.toLowerCase() && v.isAvailable !== false
+            );
+
+            if (!variant) {
+                throw buildHttpError(400, `Size "${item.size}" is not available for ${product.title}`);
+            }
+
+            unitPrice = variant.price;
+            size = variant.size;
+        } else {
+            // Single-price product
+            if (product.price === null || product.price === undefined) {
+                throw buildHttpError(400, `Product ${product.title} has no valid price`);
+            }
+            unitPrice = product.price;
+        }
+
         totalAmount += unitPrice * quantity;
+
         return {
-            pizza: pizza._id,
-            title: pizza.title,
-            size: pizza.sizes[sizeIndex],
+            product: product._id,
+            title: product.title,
+            size,
             price: unitPrice,
             quantity,
         };
     });
+
     return { hydratedItems, totalAmount };
 };
 
@@ -54,10 +84,10 @@ const createRazorpayOrder = async (req, res, next) => {
             throw buildHttpError(500, "RAZORPAY_KEY_ID is not configured on the server");
         }
 
-        const pizzaIds = items.map((item) => item.pizzaId);
-        const pizzas = await Pizza.find({ _id: { $in: pizzaIds }, isAvailable: true }).lean();
-        const pizzaMap = new Map(pizzas.map((pizza) => [pizza._id.toString(), pizza]));
-        const { hydratedItems, totalAmount } = materializeOrderItems(items, pizzaMap);
+        const productIds = items.map((item) => item.productId);
+        const products = await Product.find({ _id: { $in: productIds }, isAvailable: true }).lean();
+        const productMap = new Map(products.map((product) => [product._id.toString(), product]));
+        const { hydratedItems, totalAmount } = materializeOrderItems(items, productMap);
 
         const amountInPaise = Math.round(totalAmount * 100);
         if (!amountInPaise || amountInPaise <= 0) {
@@ -117,10 +147,10 @@ const createOrderFromPayment = async (req, res, next) => {
             throw buildHttpError(500, "RAZORPAY_KEY_SECRET is not configured on the server");
         }
 
-        const pizzaIds = items.map((item) => item.pizzaId);
-        const pizzas = await Pizza.find({ _id: { $in: pizzaIds }, isAvailable: true }).lean();
-        const pizzaMap = new Map(pizzas.map((pizza) => [pizza._id.toString(), pizza]));
-        const { hydratedItems, totalAmount } = materializeOrderItems(items, pizzaMap);
+        const productIds = items.map((item) => item.productId);
+        const products = await Product.find({ _id: { $in: productIds }, isAvailable: true }).lean();
+        const productMap = new Map(products.map((product) => [product._id.toString(), product]));
+        const { hydratedItems, totalAmount } = materializeOrderItems(items, productMap);
         const expectedAmountPaise = Math.round(totalAmount * 100);
 
         if (typeof amount === "number" && Math.abs(expectedAmountPaise - amount) > 1) {
