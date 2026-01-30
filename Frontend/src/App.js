@@ -86,7 +86,7 @@ const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCatego
       setBannerIndex((prev) => (prev + 1) % bannerMessages.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [bannerMessages.length]);
 
   return (
     <div className="space-y-10 pb-12">
