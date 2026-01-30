@@ -3,90 +3,102 @@ import { Leaf, Users, Timer } from "lucide-react";
 
 const AboutUsPage = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-gradient-to-b from-blue-50 via-white to-blue-100 min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-96 bg-gray-800">
-        {/* <img
-          src="https://placehold.co/1920x800/f87171/ffffff"
-          alt="Our Pizzeria"
-          className="w-full h-full object-cover opacity-40"
-        /> */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white text-center tracking-tight animate-fade-in-down">
-            About Santorini flavours
+      <div className="relative h-48 md:h-64 flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <svg viewBox="0 0 1440 320" className="w-full h-full" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="aboutHeroGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#2563eb" />
+                <stop offset="100%" stopColor="#60a5fa" />
+              </linearGradient>
+            </defs>
+            <rect width="1440" height="320" fill="url(#aboutHeroGradient)" />
+            <ellipse cx="720" cy="320" rx="800" ry="120" fill="#fff" fillOpacity="0.2" />
+          </svg>
+        </div>
+        <div className="relative z-10 flex flex-col items-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white text-center tracking-tight drop-shadow-lg animate-fade-in-down">
+            About <span className="text-blue-200">Santorini flavours</span>
           </h1>
         </div>
       </div>
 
       {/* Our Story Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-6">
               Our Story: A Passion for Perfection
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
+            <p className="text-gray-700 leading-relaxed mb-4 text-lg">
               Santorini flavours was born from a simple idea in a small kitchen in
-              Kinshangarh(Rajasthan): to create the most delicious pizza using only the
+              Kinshangarh (Rajasthan): to create the most delicious pizza using only the
               freshest, locally-sourced ingredients. What started as a family's
               passion project quickly grew into a beloved local eatery, known
               for its authentic taste and commitment to quality.
             </p>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed text-lg">
               We believe pizza is more than just food; it's a way to bring
               people together. Every dough is hand-tossed with care, every sauce
               is made from our secret family recipe, and every topping is chosen
               for its quality and flavor.
             </p>
           </div>
-          <div>
-            <img
-              src="https://placehold.co/600x400/34d399/ffffff?text=Fresh+Ingredients"
-              alt="Fresh Ingredients"
-              className="rounded-lg shadow-xl"
-            />
+          <div className="flex justify-center">
+            <div className="relative group">
+              <img
+                src="https://placehold.co/600x400/2563eb/ffffff?text=Fresh+Ingredients"
+                alt="Fresh Ingredients"
+                className="rounded-2xl shadow-2xl border-4 border-blue-200 group-hover:scale-105 transition-transform duration-300 bg-blue-100"
+              />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white/80 px-4 py-2 rounded-xl shadow-lg text-blue-700 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Locally Sourced
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Our Mission Section */}
-      <div className="bg-gray-50 py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12">
+      <div className="bg-gradient-to-r from-blue-100 via-white to-blue-50 py-16 md:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-12">
             Our Core Values
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="flex flex-col items-center">
-              <div className="bg-red-100 text-red-600 rounded-full p-5 mb-4">
-                <Leaf size={32} />
+            <div className="flex flex-col items-center bg-white/80 rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-shadow duration-300">
+              <div className="bg-blue-100 text-blue-600 rounded-full p-5 mb-4 shadow-md">
+                <Leaf size={36} />
               </div>
-              <h3 className="text-xl font-semibold mb-2">
+              <h3 className="text-xl font-semibold mb-2 text-blue-800">
                 Quality Ingredients
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-base">
                 We partner with local farmers to bring you the freshest toppings
                 and finest cheeses.
               </p>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="bg-red-100 text-red-600 rounded-full p-5 mb-4">
-                <Users size={32} />
+            <div className="flex flex-col items-center bg-white/80 rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-shadow duration-300">
+              <div className="bg-blue-100 text-blue-600 rounded-full p-5 mb-4 shadow-md">
+                <Users size={36} />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Community First</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold mb-2 text-blue-800">Community First</h3>
+              <p className="text-gray-600 text-base">
                 We're proud to be a part of the neighborhood and strive to make
                 a positive impact.
               </p>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="bg-red-100 text-red-600 rounded-full p-5 mb-4">
-                <Timer size={32} />
+            <div className="flex flex-col items-center bg-white/80 rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-shadow duration-300">
+              <div className="bg-blue-100 text-blue-600 rounded-full p-5 mb-4 shadow-md">
+                <Timer size={36} />
               </div>
-              <h3 className="text-xl font-semibold mb-2">
+              <h3 className="text-xl font-semibold mb-2 text-blue-800">
                 Service with a Smile
               </h3>
-              <p className="text-gray-600">
-                From our kitchen to your Seat, we're dedicated to providing a
+              <p className="text-gray-600 text-base">
+                From our kitchen to your seat, we're dedicated to providing a
                 fast and friendly experience.
               </p>
             </div>

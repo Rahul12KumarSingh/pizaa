@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Pizza, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="lg:col-span-4 space-y-6">
 
             <div className="flex items-center space-x-2">
-              <Pizza className="h-8 w-8 text-red-500" />
+              <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Santorini flavours logo" className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain" />
               <span className="text-2xl font-bold">Santorini flavours</span>
             </div>
 
@@ -20,34 +20,12 @@ const Footer = () => {
             </p>
 
             <div className="flex space-x-4">
-              <button
-                type="button"
-                aria-label="Facebook"
-                className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
-              >
+              <a href="https://www.facebook.com/profile.php?id=61579868306544" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-blue-600">
                 <Facebook size={20} />
-              </button>
-              <button
-                type="button"
-                aria-label="Twitter"
-                className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
-              >
-                <Twitter size={20} />
-              </button>
-              <button
-                type="button"
-                aria-label="Instagram"
-                className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
-              >
+              </a>
+              <a href="https://www.instagram.com/santorini_flavours/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-blue-600">
                 <Instagram size={20} />
-              </button>
-              <button
-                type="button"
-                aria-label="Linkedin"
-                className="text-gray-400 hover:text-white transition-colors p-2 rounded-full bg-gray-800 hover:bg-red-600"
-              >
-                <Linkedin size={20} />
-              </button>
+              </a>
             </div>
 
           </div>

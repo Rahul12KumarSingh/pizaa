@@ -73,52 +73,97 @@ const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCatego
     return category?.name || "All Items";
   }, [selectedCategory, categories]);
 
+  // Sliding banner with animated text and color
+  const bannerMessages = [
+    { text: "Order local favorites in seconds", color: "bg-blue-600 text-white" },
+    { text: "Fresh ingredients, fast delivery", color: "bg-green-600 text-white" },
+    { text: "Secure payments, easy checkout", color: "bg-purple-600 text-white" },
+    { text: "Hot deals every day!", color: "bg-pink-600 text-white" },
+  ];
+  const [bannerIndex, setBannerIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBannerIndex((prev) => (prev + 1) % bannerMessages.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="space-y-10 pb-12">
-      <section className="bg-gradient-to-b from-rose-600 via-rose-500 to-rose-400 text-white">
+      <section className="relative bg-gradient-to-b from-blue-700 via-blue-600 to-blue-400 text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col gap-8">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 bg-white/15 px-3 py-1 rounded-full text-xs font-semibold">
+            <div
+              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-700 ease-in-out ${bannerMessages[bannerIndex].color}`}
+              key={bannerIndex}
+              style={{
+                transform: 'translateX(0)',
+                animation: 'slideX 0.7s cubic-bezier(0.4,0,0.2,1)'
+              }}
+            >
               <Sparkles className="h-4 w-4" />
-              Order local favorites in seconds
+              <span>{bannerMessages[bannerIndex].text}</span>
             </div>
+            <style>{`
+              @keyframes slideX {
+                0% { transform: translateX(-100%); opacity: 0; }
+                60% { opacity: 1; }
+                100% { transform: translateX(0); opacity: 1; }
+              }
+            `}</style>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
               Hot, fresh, and local pizza delivered from your neighborhood shops.
             </h1>
           </div>
-
-          <div className="grid grid-cols-3 gap-4 text-sm">
-            {["30 min avg", "Live shop menus", "Secure payment"].map((item) => (
-              <div key={item} className="bg-white/10 rounded-xl p-3 backdrop-blur">
-                <p className="font-semibold">{item}</p>
-              </div>
-            ))}
-          </div>
+        </div>
+        {/* Responsive SVG divider for all screens */}
+        <div className="w-full overflow-hidden leading-none -mb-1">
+          <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-8 sm:h-12">
+            <path fill="#f8fafc" d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" />
+          </svg>
         </div>
       </section>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6" id="menu">
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-rose-600 font-semibold">Menu</p>
-            <h2 className="text-2xl font-bold text-slate-900">{selectedCategoryName}</h2>
+        {/* Redesigned: Menu Header & Category Tabs for Mobile-First UI */}
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-1 w-full">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+              <p className="text-lg sm:text-xl md:text-2xl font-extrabold uppercase tracking-wide text-blue-700 leading-tight mb-1 sm:mb-0">Menu</p>
+              <h2 className="text-base sm:text-lg md:text-xl font-bold text-slate-900 leading-tight text-left sm:text-right">{selectedCategoryName}</h2>
+            </div>
+            {/* Enhanced: Feature badges for better UX */}
+            <div className="flex sm:hidden items-center gap-2 mt-2 text-xs text-slate-500">
+              <span className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full"><Clock className="h-4 w-4 text-blue-600" /> Fast prep</span>
+              <span className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded-full"><ShieldCheck className="h-4 w-4 text-green-600" /> Secure pay</span>
+              <span className="flex items-center gap-1 bg-purple-50 px-2 py-1 rounded-full"><MapPin className="h-4 w-4 text-purple-600" /> Local shops</span>
+            </div>
           </div>
-
-          <div className="flex items-center gap-3 text-sm text-slate-600 flex-wrap">
-            <span className="flex items-center gap-1"><Clock className="h-4 w-4 text-rose-600" /> Fast prep</span>
-            <span className="flex items-center gap-1"><ShieldCheck className="h-4 w-4 text-rose-600" /> Secure pay</span>
-            <span className="flex items-center gap-1"><MapPin className="h-4 w-4 text-rose-600" /> Local shops</span>
+          {/* Enhanced: Feature badges for better UX */}
+          <div className="hidden sm:flex items-center gap-3 text-sm text-slate-600 flex-wrap">
+            <span className="flex items-center gap-2 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 px-4 py-2 rounded-xl shadow-sm font-semibold border border-blue-200">
+              <Clock className="h-5 w-5 text-blue-500" />
+              <span>Fast prep</span>
+            </span>
+            <span className="flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-50 text-green-700 px-4 py-2 rounded-xl shadow-sm font-semibold border border-green-200">
+              <ShieldCheck className="h-5 w-5 text-green-500" />
+              <span>Secure pay</span>
+            </span>
+            <span className="flex items-center gap-2 bg-gradient-to-r from-purple-100 to-purple-50 text-purple-700 px-4 py-2 rounded-xl shadow-sm font-semibold border border-purple-200">
+              <MapPin className="h-5 w-5 text-purple-500" />
+              <span>Local shops</span>
+            </span>
           </div>
         </div>
 
-        {/* Category Tabs */}
+        {/* Category Tabs - horizontal scroll, mobile friendly */}
         {status === "succeeded" && categories.length > 0 && (
-          <div className="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+          <div className="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide snap-x">
             <button
               onClick={() => onCategorySelect(null)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition ${!selectedCategory
-                ? "bg-rose-600 text-white"
-                : "bg-white text-slate-600 border border-slate-200 hover:border-rose-200"
+              className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition snap-start ${!selectedCategory
+                ? "bg-blue-600 text-white shadow"
+                : "bg-white text-slate-600 border border-slate-200 hover:border-blue-200"
                 }`}
             >
               All
@@ -127,9 +172,9 @@ const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCatego
               <button
                 key={category.id}
                 onClick={() => onCategorySelect(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition ${selectedCategory === category.id
-                  ? "bg-rose-600 text-white"
-                  : "bg-white text-slate-600 border border-slate-200 hover:border-rose-200"
+                className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition snap-start ${selectedCategory === category.id
+                  ? "bg-blue-600 text-white shadow"
+                  : "bg-white text-slate-600 border border-slate-200 hover:border-blue-200"
                   }`}
               >
                 {category.name}
@@ -147,12 +192,12 @@ const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCatego
         )}
 
         {status === "failed" && (
-          <div className="bg-white border border-rose-100 text-rose-700 rounded-xl p-4 flex items-center justify-between">
+          <div className="bg-white border border-blue-100 text-blue-700 rounded-xl p-4 flex items-center justify-between">
             <div>
               <p className="font-semibold">Could not load menu.</p>
               <p className="text-sm">{error}</p>
             </div>
-            <button onClick={onRetry} className="px-3 py-2 bg-rose-600 text-white rounded-full text-sm font-semibold">
+            <button onClick={onRetry} className="px-3 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold">
               Retry
             </button>
           </div>

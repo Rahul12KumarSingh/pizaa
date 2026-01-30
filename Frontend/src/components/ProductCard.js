@@ -8,10 +8,9 @@ const buildKey = (id, size) => `${id}-${size}`;
 // Generate a consistent color based on product name
 const getBackgroundColor = (name) => {
     const colors = [
-        "bg-rose-500",
+        "bg-blue-500",
         "bg-amber-500",
         "bg-emerald-500",
-        "bg-blue-500",
         "bg-purple-500",
         "bg-pink-500",
         "bg-teal-500",
@@ -82,34 +81,40 @@ const ProductCard = ({ product }) => {
     }, [product.name]);
 
     return (
-        <div className="bg-white rounded-2xl shadow-soft p-4 flex flex-col gap-3 h-full">
+        <div className="bg-white rounded-2xl shadow-soft p-4 flex flex-col gap-3 h-full transition-transform transform hover:scale-105">
             <div className="relative overflow-hidden rounded-xl">
                 {!imageError && product.image ? (
                     <img
                         src={product.image}
                         alt={product.name}
-                        className="h-44 w-full object-cover transform transition duration-300 hover:scale-105"
+                        className="h-52 w-full object-cover rounded-lg border"
                         loading="lazy"
                         onError={() => setImageError(true)}
                     />
                 ) : (
-                    <div className={`h-44 w-full ${bgColor} flex items-center justify-center p-4`}>
+                    <div className={`h-52 w-full ${bgColor} flex items-center justify-center p-4 rounded-lg border`}>
                         <span className="text-white text-lg font-bold text-center leading-tight drop-shadow-md">
                             {product.name}
                         </span>
                     </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
                 <div className="absolute top-3 right-3 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-xs font-semibold text-slate-800 flex items-center gap-1">
                     <Star className="h-4 w-4 text-amber-500" />
                     {rating}
                 </div>
+                {/* Badge for Best Seller or Popular */}
+                {(product.tags?.includes("Best Seller") || product.tags?.includes("Popular")) && (
+                    <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold rounded-full px-2 py-1">
+                        {product.tags.includes("Best Seller") ? "Best Seller" : "Popular"}
+                    </div>
+                )}
             </div>
             <div className="flex-1 flex flex-col gap-2">
                 <div>
                     <div className="flex items-center justify-between">
                         <h3 className="text-lg font-semibold text-slate-900">{product.name}</h3>
-                        <span className="text-sm font-semibold text-rose-600">{displayPrice}</span>
+                        <span className="text-sm font-semibold text-blue-600">{displayPrice}</span>
                     </div>
                     <p className="text-sm text-slate-500 mt-1 overflow-hidden text-ellipsis" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
                         {product.description}
@@ -124,7 +129,7 @@ const ProductCard = ({ product }) => {
                                 key={`${size}-${idx}`}
                                 onClick={() => setSelectedIndex(idx)}
                                 className={`flex-1 rounded-full border px-3 py-2 text-xs font-semibold transition ${selectedIndex === idx
-                                    ? "bg-rose-50 text-rose-700 border-rose-200"
+                                    ? "bg-blue-50 text-blue-700 border-blue-200"
                                     : "bg-white text-slate-600 border-slate-200"
                                     }`}
                                 disabled={!isOrderable}
@@ -152,7 +157,7 @@ const ProductCard = ({ product }) => {
                             <span className="text-sm font-semibold text-slate-800">{quantity} in cart</span>
                             <button
                                 onClick={handleAdd}
-                                className="h-8 w-8 flex items-center justify-center bg-rose-600 text-white rounded-full"
+                                className="h-8 w-8 flex items-center justify-center bg-blue-600 text-white rounded-full"
                                 aria-label="Increase quantity"
                             >
                                 +
@@ -161,7 +166,7 @@ const ProductCard = ({ product }) => {
                     ) : (
                         <button
                             onClick={handleAdd}
-                            className="w-full bg-rose-600 text-white rounded-full py-3 text-sm font-semibold shadow-md shadow-rose-200 hover:bg-rose-700 transition"
+                            className="w-full bg-blue-600 text-white rounded-full py-3 text-sm font-semibold shadow-md shadow-blue-200 hover:bg-blue-700 transition"
                             disabled={!isOrderable}
                         >
                             Add to cart

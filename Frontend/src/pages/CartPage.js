@@ -109,7 +109,7 @@ const CartPage = ({ onNavigateHome }) => {
                         contact: customer.phone,
                     },
                     notes: { receipt: orderData.receipt },
-                    theme: { color: "#e11d48" },
+                    theme: { color: "#2563eb" },
                     config: {
                         display: {
                             blocks: {
@@ -118,9 +118,15 @@ const CartPage = ({ onNavigateHome }) => {
                                     instruments: [
                                         { method: "upi", flows: ["qr", "collect", "intent"] }
                                     ]
+                                },
+                                card: {
+                                    name: "Pay via Card",
+                                    instruments: [
+                                        { method: "card" }
+                                    ]
                                 }
                             },
-                            sequence: ["block.upi"],
+                            sequence: ["block.upi", "block.card"],
                             preferences: { show_default_blocks: false }
                         }
                     },
@@ -205,17 +211,17 @@ const CartPage = ({ onNavigateHome }) => {
     return (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
 
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center justify-between mb-6">
                 <button
                     onClick={onNavigateHome}
-                    className="flex items-center text-sm font-semibold text-slate-600 hover:text-rose-600"
+                    className="flex items-center text-sm font-semibold text-slate-600 hover:text-blue-600"
                 >
                     <ArrowLeft className="h-4 w-4 mr-1" /> Back
                 </button>
-
                 <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                    <ShoppingBag className="h-5 w-5 text-rose-600" /> Your Cart
+                    <ShoppingBag className="h-5 w-5 text-blue-600" /> Your Cart
                 </h2>
+                <div className="w-12" />
             </div>
 
             {items.length === 0 ? (
@@ -223,7 +229,7 @@ const CartPage = ({ onNavigateHome }) => {
                     <p className="text-slate-600">Your cart is empty. Add some delicious pizzas!</p>
                     <button
                         onClick={onNavigateHome}
-                        className="mt-4 bg-rose-600 text-white px-4 py-2 rounded-full font-semibold"
+                        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-full font-semibold"
                     >
                         Browse menu
                     </button>
@@ -250,7 +256,7 @@ const CartPage = ({ onNavigateHome }) => {
                                     <div>
                                         <h4 className="text-sm font-semibold text-slate-900">{item.name}</h4>
                                         <p className="text-xs text-slate-500">Size: {item.size}</p>
-                                        <p className="text-sm font-semibold text-rose-600">₹{item.price}</p>
+                                        <p className="text-sm font-semibold text-blue-600">₹{item.price}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -267,7 +273,7 @@ const CartPage = ({ onNavigateHome }) => {
 
                                     <button
                                         onClick={() => dispatch(addItem({ ...item }))}
-                                        className="h-9 w-9 flex items-center justify-center rounded-full bg-rose-600 text-white"
+                                        className="h-9 w-9 flex items-center justify-center rounded-full bg-blue-600 text-white"
                                         aria-label="Increase quantity"
                                     >
                                         <Plus className="h-4 w-4" />
@@ -275,7 +281,7 @@ const CartPage = ({ onNavigateHome }) => {
 
                                     <button
                                         onClick={() => dispatch(removeItem({ id: item.id, size: item.size }))}
-                                        className="ml-2 h-9 w-9 flex items-center justify-center rounded-full border border-transparent text-rose-600 hover:bg-rose-50"
+                                        className="ml-2 h-9 w-9 flex items-center justify-center rounded-full border border-transparent text-blue-600 hover:bg-blue-50"
                                         aria-label="Remove item"
                                     >
                                         <Trash2 className="h-4 w-4" />
@@ -299,7 +305,7 @@ const CartPage = ({ onNavigateHome }) => {
                                     name="name"
                                     value={customer.name}
                                     onChange={handleFieldChange}
-                                    className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200"
+                                    className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
                                     placeholder="Your full name"
                                     required
                                 />
@@ -312,7 +318,7 @@ const CartPage = ({ onNavigateHome }) => {
                                     name="phone"
                                     value={customer.phone}
                                     onChange={handleFieldChange}
-                                    className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200"
+                                    className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
                                     placeholder="10 digit mobile"
                                     required
                                 />
@@ -321,13 +327,13 @@ const CartPage = ({ onNavigateHome }) => {
                             <button
                                 type="submit"
                                 disabled={status.loading}
-                                className="w-full bg-rose-600 text-white rounded-full py-3 font-semibold shadow-md hover:bg-rose-700 disabled:opacity-60"
+                                className="w-full bg-blue-600 text-white rounded-full py-3 font-semibold shadow-md hover:bg-blue-700 disabled:opacity-60"
                             >
                                 {status.loading ? "Processing..." : `Pay ₹${formattedTotal}`}
                             </button>
                             <p className="text-xs text-slate-500 leading-relaxed text-center sm:text-left">
                                 By placing this order you agree to our
-                                <Link to="/terms-and-conditions" className="text-rose-600 font-semibold underline ml-1">
+                                <Link to="/terms-and-conditions" className="text-blue-600 font-semibold underline ml-1">
                                     Terms & Conditions
                                 </Link>
                                 .
@@ -335,7 +341,7 @@ const CartPage = ({ onNavigateHome }) => {
                         </form>
 
                         {status.error && (
-                            <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg p-3">
+                            <div className="text-sm text-blue-600 bg-blue-50 border border-blue-100 rounded-lg p-3">
                                 {status.error}
                             </div>
                         )}

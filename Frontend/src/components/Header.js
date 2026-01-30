@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Pizza, ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X } from "lucide-react";
 import { selectCartCount } from "../store/cartSlice";
 import { NavLink, Link } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50 border-b border-slate-100">
+    <header className="bg-gradient-to-b from-blue-700 via-blue-600 to-blue-500/90 backdrop-blur shadow-sm sticky top-0 z-50 border-b border-blue-200">
       <nav className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link
@@ -24,7 +24,7 @@ const Header = () => {
             className="flex items-center space-x-2 group"
             aria-label="Go to home"
           >
-            <Pizza className="h-8 w-8 text-rose-600 group-hover:rotate-12 transition" />
+            <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Santorini flavours logo" className="h-16 w-16 sm:h-24 sm:w-24 md:h-24 md:w-24 object-contain transition-transform duration-200 group-hover:scale-105 " />
             <span className="text-xl font-extrabold text-slate-900 tracking-tight">
               Santorini flavours
             </span>
@@ -37,20 +37,13 @@ const Header = () => {
                 to={link.path}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `text-sm font-semibold transition relative pb-1 ${isActive
-                    ? "text-rose-600"
-                    : "text-slate-600 hover:text-rose-600"
+                  `text-sm font-semibold transition relative pb-1 px-3 py-2 rounded-lg ${isActive
+                    ? "text-white bg-blue-600 shadow"
+                    : "text-blue-100 hover:bg-blue-500 hover:text-white"
                   }`
                 }
               >
-                {({ isActive }) => (
-                  <>
-                    {link.name}
-                    {isActive && (
-                      <span className="absolute left-0 bottom-0 h-0.5 w-full bg-rose-600 rounded-full"></span>
-                    )}
-                  </>
-                )}
+                {link.name}
               </NavLink>
             ))}
           </div>
@@ -59,12 +52,12 @@ const Header = () => {
             <Link
               to="/cart"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="relative p-2 rounded-full border border-slate-200 text-slate-700 hover:border-rose-200 hover:text-rose-700 transition"
+              className="relative p-2 rounded-full border border-slate-200 text-slate-700 hover:border-blue-200 hover:text-blue-700 transition"
               aria-label="Open cart"
             >
               <ShoppingCart className="h-6 w-6" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-rose-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -85,7 +78,7 @@ const Header = () => {
       </nav>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-slate-100 shadow-sm">
+        <div className="md:hidden bg-gradient-to-b from-blue-700 via-blue-600 to-blue-400 border-t border-blue-200 shadow-sm">
           <div className="px-4 py-3 space-y-1">
             {navLinks.map((link) => (
               <NavLink
@@ -93,9 +86,9 @@ const Header = () => {
                 to={link.path}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block w-full text-left px-3 py-2 rounded-lg font-semibold ${isActive
-                    ? "text-rose-700 bg-rose-50"
-                    : "text-slate-700 hover:bg-slate-50"
+                  `block w-full text-left px-3 py-2 rounded-lg font-semibold transition-colors duration-200 ${isActive
+                    ? "text-white bg-blue-600"
+                    : "text-blue-100 hover:bg-blue-500 hover:text-white"
                   }`
                 }
               >
