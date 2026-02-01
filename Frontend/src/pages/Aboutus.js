@@ -52,7 +52,7 @@ const AboutUsPage = () => {
               <div className="relative rounded-[28px] p-1 bg-gradient-to-br from-blue-300 via-blue-100 to-white shadow-[0_25px_60px_rgba(15,23,42,0.15)]">
                 <div className="rounded-[24px] overflow-hidden relative bg-slate-900/5">
                   <img
-                    src="/images/shopImage.jpeg"
+                    src="/Images/shopImage.jpeg"
                     alt="Santorini flavours storefront"
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
