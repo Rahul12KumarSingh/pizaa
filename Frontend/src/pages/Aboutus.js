@@ -47,14 +47,21 @@ const AboutUsPage = () => {
             </p>
           </div>
           <div className="flex justify-center">
-            <div className="relative group">
-              <img
-                src="https://placehold.co/600x400/2563eb/ffffff?text=Fresh+Ingredients"
-                alt="Fresh Ingredients"
-                className="rounded-2xl shadow-2xl border-4 border-blue-200 group-hover:scale-105 transition-transform duration-300 bg-blue-100"
-              />
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white/80 px-4 py-2 rounded-xl shadow-lg text-blue-700 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Locally Sourced
+            <div className="relative group w-full max-w-md">
+              <div className="absolute -inset-4 md:-inset-6 bg-gradient-to-br from-blue-200 via-indigo-200 to-emerald-100 rounded-[36px] blur-3xl opacity-50 group-hover:opacity-80 transition-opacity duration-500" aria-hidden="true" />
+              <div className="relative rounded-[28px] p-1 bg-gradient-to-br from-blue-300 via-blue-100 to-white shadow-[0_25px_60px_rgba(15,23,42,0.15)]">
+                <div className="rounded-[24px] overflow-hidden relative bg-slate-900/5">
+                  <img
+                    src="/images/shopImage.jpeg"
+                    alt="Santorini flavours storefront"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 border border-white/30 rounded-[24px] pointer-events-none" />
+                </div>
+                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-white px-5 py-2 rounded-full shadow-xl text-blue-700 font-semibold text-sm flex items-center gap-2">
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" aria-hidden="true" />
+                  Locally Sourced
+                </div>
               </div>
             </div>
           </div>

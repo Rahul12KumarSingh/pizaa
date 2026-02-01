@@ -43,15 +43,44 @@ const normalizeProduct = (product) => {
   };
 };
 
+const CATEGORY_ORDER = [
+  "Pizza",
+  "Santroni Special",
+  "Garlic Bread",
+  "Calzones",
+  "Fries",
+  "Shakes",
+  "Beverage",
+];
+
 const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCategorySelect }) => {
-  // Get all categories from menu data
+
+  // Get all categories from menu data in fixed order
   const categories = useMemo(() => {
     if (!Array.isArray(menuData)) return [];
-    return menuData.map((cat) => ({
+    const categoriesMap = menuData.map((cat) => ({
       id: cat.categoryId,
       name: cat.categoryName,
       slug: cat.categorySlug,
     }));
+
+    // Sort categories according to the predefined order
+    return categoriesMap.sort((a, b) => {
+      const indexA = CATEGORY_ORDER.indexOf(a.name);
+      const indexB = CATEGORY_ORDER.indexOf(b.name);
+
+      // If both are in the order list, sort by their position
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      // If only one is in the order list, it comes first
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      // If neither are in the order list, keep original order
+      return 0;
+    });
   }, [menuData]);
 
   // Get products for selected category (or all products if none selected)

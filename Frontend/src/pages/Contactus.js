@@ -66,7 +66,7 @@ const ContactUsPage = () => {
               <div>
                 <h3 className="font-semibold text-lg text-blue-900">Our Address</h3>
                 <p className="text-blue-700">
-                  Santorini Flavours, Shop No. 7, London Street, Moonland Bae, Snow Yard, Kinshangarh (Rajasthan) - 305801
+                  Santorini Flavours, Shop No. 7, London Street, Moonland Bae, Snow Yard, Kishangarh (Rajasthan) - 305801
                 </p>
               </div>
             </div>
