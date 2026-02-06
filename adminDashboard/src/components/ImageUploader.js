@@ -57,48 +57,61 @@ const ImageUploader = ({ value, onChange, className = '' }) => {
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
+    const triggerFileInput = () => {
+        if (!uploading && fileInputRef.current) {
+            fileInputRef.current.value = '';
+            fileInputRef.current.click();
+        }
+    };
+
     return (
         <div className={className}>
             <input
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
+                capture="environment"
                 onChange={handleInputChange}
                 className="hidden"
             />
 
             {value ? (
-                <div className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+                <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
                     <img
                         src={value}
                         alt="Product"
                         className="w-full h-48 object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                    {/* Always-visible action buttons on mobile, hover on desktop */}
+                    <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-3 p-3 bg-gradient-to-t from-black/60 to-transparent">
                         <button
                             type="button"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="p-2 bg-white rounded-lg text-slate-700 hover:bg-slate-100 transition"
+                            onClick={triggerFileInput}
+                            className="flex items-center gap-1.5 px-3 py-2 bg-white rounded-lg text-slate-700 hover:bg-slate-100 transition text-xs font-medium shadow-sm"
                         >
-                            <Upload className="h-4 w-4" />
+                            <Upload className="h-3.5 w-3.5" />
+                            Change
                         </button>
                         <button
                             type="button"
                             onClick={handleRemove}
-                            className="p-2 bg-white rounded-lg text-red-600 hover:bg-red-50 transition"
+                            className="flex items-center gap-1.5 px-3 py-2 bg-white rounded-lg text-red-600 hover:bg-red-50 transition text-xs font-medium shadow-sm"
                         >
-                            <X className="h-4 w-4" />
+                            <X className="h-3.5 w-3.5" />
+                            Remove
                         </button>
                     </div>
                 </div>
             ) : (
-                <div
-                    onClick={() => !uploading && fileInputRef.current?.click()}
+                <button
+                    type="button"
+                    onClick={triggerFileInput}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onDragLeave={() => setDragOver(false)}
-                    className={`flex flex-col items-center justify-center h-48 rounded-xl border-2 border-dashed cursor-pointer transition-all
-                        ${dragOver ? 'border-primary-500 bg-primary-50' : 'border-slate-300 bg-slate-50 hover:border-primary-400 hover:bg-slate-100'}
+                    disabled={uploading}
+                    className={`flex flex-col items-center justify-center w-full h-48 rounded-xl border-2 border-dashed cursor-pointer transition-all
+                        ${dragOver ? 'border-primary-500 bg-primary-50' : 'border-slate-300 bg-slate-50 hover:border-primary-400 hover:bg-slate-100 active:bg-slate-200'}
                         ${uploading ? 'pointer-events-none opacity-60' : ''}
                     `}
                 >
@@ -116,7 +129,7 @@ const ImageUploader = ({ value, onChange, className = '' }) => {
                             <p className="text-xs text-slate-400 mt-1">PNG, JPG up to 5MB</p>
                         </>
                     )}
-                </div>
+                </button>
             )}
 
             {error && (
