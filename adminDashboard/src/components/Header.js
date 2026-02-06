@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Pizza, Bell, Settings, User, LogOut, ChevronDown } from 'lucide-react';
+import { Bell, PackagePlus, User, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const BRAND_NAME = 'Santorini Flavours';
 
-const Header = () => {
+const Header = ({ onSettingsClick, newOrderCount = 0, onBellClick }) => {
     const { user, logout } = useAuth();
     const [showDropdown, setShowDropdown] = useState(false);
 
@@ -18,15 +18,13 @@ const Header = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo & Brand */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                         <div className="relative">
-                            <div className="bg-gradient-to-br from-primary-500 to-primary-600 p-2.5 rounded-xl shadow-lg">
-                                <Pizza className="h-6 w-6 text-white" />
-                            </div>
+                            <img src="/logo.png" alt="Santorini Flavours" className="h-14 w-14 rounded-xl object-contain" />
                             <span className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full border-2 border-slate-900 animate-pulse" />
                         </div>
                         <div>
-                            <h1 className="text-lg font-bold text-white tracking-tight">{BRAND_NAME}</h1>
+                            <h1 className="text-sm font-bold text-white tracking-tight">{BRAND_NAME}</h1>
                             {/* <p className="text-xs text-slate-400 font-medium">Admin Console</p> */}
                         </div>
                     </div>
@@ -46,14 +44,28 @@ const Header = () => {
                         </div>
 
                         {/* Notification Bell */}
-                        <button className="relative p-2.5 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all">
-                            <Bell className="h-5 w-5" />
-                            <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-primary-500 rounded-full" />
+                        <button
+                            onClick={onBellClick}
+                            className={`relative p-2.5 hover:bg-slate-700/50 rounded-lg transition-all ${newOrderCount > 0 ? 'text-white' : 'text-slate-400 hover:text-white'
+                                }`}
+                        >
+                            <Bell className={`h-5 w-5 ${newOrderCount > 0 ? 'animate-[ring_0.5s_ease-in-out_infinite]' : ''}`} />
+                            {newOrderCount > 0 ? (
+                                <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center h-5 min-w-[1.25rem] px-1 bg-red-500 text-white text-[10px] font-bold rounded-full shadow-lg animate-bounce">
+                                    {newOrderCount > 99 ? '99+' : newOrderCount}
+                                </span>
+                            ) : (
+                                <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-primary-500 rounded-full" />
+                            )}
                         </button>
 
-                        {/* Settings */}
-                        <button className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all">
-                            <Settings className="h-5 w-5" />
+                        {/* Product Management */}
+                        <button
+                            onClick={onSettingsClick}
+                            title="Manage Products"
+                            className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all"
+                        >
+                            <PackagePlus className="h-5 w-5" />
                         </button>
 
                         {/* User Dropdown */}

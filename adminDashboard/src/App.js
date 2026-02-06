@@ -4,7 +4,10 @@ import { useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import ProgressOrdersTab from './pages/ProgressOrdersTab';
 import OrderHistoryTab from './pages/OrderHistoryTab';
+import SettingsPage from './pages/SettingsPage';
 import LoginPage from './pages/LoginPage';
+import useProgressOrders from './hooks/useProgressOrders';
+import useOrderNotification from './hooks/useOrderNotification';
 
 const TABS = [
     { id: 'progress', label: 'Live Orders', icon: ClipboardList, badge: true },
@@ -24,6 +27,11 @@ const LoadingScreen = () => (
 const App = () => {
     const { isAuthenticated, isLoading } = useAuth();
     const [activeTab, setActiveTab] = useState('progress');
+    const [showSettings, setShowSettings] = useState(false);
+
+    // Track orders for notification sound & badge
+    const { orders: liveOrders } = useProgressOrders({ enablePolling: true });
+    const { newOrderCount, acknowledgeAll } = useOrderNotification(liveOrders);
 
     // Show loading screen while checking auth status
     if (isLoading) {
@@ -35,9 +43,19 @@ const App = () => {
         return <LoginPage />;
     }
 
+    // Show settings page
+    if (showSettings) {
+        return (
+            <div className="min-h-screen bg-slate-100 flex flex-col">
+                <Header onSettingsClick={() => setShowSettings(false)} newOrderCount={newOrderCount} onBellClick={acknowledgeAll} />
+                <SettingsPage onBack={() => setShowSettings(false)} />
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-slate-100 flex flex-col">
-            <Header />
+            <Header onSettingsClick={() => setShowSettings(true)} newOrderCount={newOrderCount} onBellClick={acknowledgeAll} />
 
             {/* Sub Header with Stats & Tabs */}
             <div className="bg-white border-b border-slate-200 shadow-sm">
