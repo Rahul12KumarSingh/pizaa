@@ -7,11 +7,12 @@ import {
     Loader2,
     RefreshCw,
     Pencil,
+    Trash2,
     ImageOff,
     ChevronDown,
     ChevronUp,
 } from 'lucide-react';
-import { fetchMenu, fetchCategories } from '../services/productService';
+import { fetchMenu, fetchCategories, deleteProduct } from '../services/productService';
 import ProductForm from '../components/ProductForm';
 
 const SettingsPage = ({ onBack }) => {
@@ -26,6 +27,10 @@ const SettingsPage = ({ onBack }) => {
     // Form modal state
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
+
+    // Delete state
+    const [deleteConfirm, setDeleteConfirm] = useState(null); // product to confirm delete
+    const [deleting, setDeleting] = useState(false);
 
     // ─── Load data ───────────────────────────────────────────────────
     const loadData = useCallback(async () => {
@@ -71,6 +76,24 @@ const SettingsPage = ({ onBack }) => {
         setShowForm(false);
         setEditingProduct(null);
         loadData();
+    };
+
+    const handleDeleteProduct = (product) => {
+        setDeleteConfirm(product);
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteConfirm?._id) return;
+        setDeleting(true);
+        try {
+            await deleteProduct(deleteConfirm._id);
+            setDeleteConfirm(null);
+            loadData();
+        } catch {
+            setError('Failed to delete product');
+        } finally {
+            setDeleting(false);
+        }
     };
 
     const toggleCategory = (categoryId) => {
@@ -281,13 +304,23 @@ const SettingsPage = ({ onBack }) => {
                                                     </div>
                                                 </div>
 
-                                                {/* Edit */}
-                                                <button
-                                                    onClick={() => handleEditProduct(product, group.categoryId)}
-                                                    className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition opacity-0 group-hover:opacity-100"
-                                                >
-                                                    <Pencil className="h-4 w-4" />
-                                                </button>
+                                                {/* Actions */}
+                                                <div className="flex items-center gap-1 flex-shrink-0 sm:opacity-0 sm:group-hover:opacity-100 transition">
+                                                    <button
+                                                        onClick={() => handleEditProduct(product, group.categoryId)}
+                                                        className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition"
+                                                        title="Edit"
+                                                    >
+                                                        <Pencil className="h-4 w-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteProduct(product)}
+                                                        className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                                                        title="Delete"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
@@ -308,6 +341,44 @@ const SettingsPage = ({ onBack }) => {
                     }}
                     onSaved={handleFormSaved}
                 />
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {deleteConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6 animate-fade-in">
+                        <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-full mx-auto mb-4">
+                            <Trash2 className="h-6 w-6 text-red-600" />
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-900 text-center">Delete Product</h3>
+                        <p className="text-sm text-slate-500 text-center mt-2">
+                            Are you sure you want to delete <span className="font-semibold text-slate-700">{deleteConfirm.title}</span>? This action cannot be undone.
+                        </p>
+                        <div className="flex items-center gap-3 mt-6">
+                            <button
+                                onClick={() => setDeleteConfirm(null)}
+                                disabled={deleting}
+                                className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 transition"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                disabled={deleting}
+                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 disabled:opacity-60 transition"
+                            >
+                                {deleting ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        Deleting...
+                                    </>
+                                ) : (
+                                    'Delete'
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

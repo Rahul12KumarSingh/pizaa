@@ -69,6 +69,15 @@ export const updateProduct = async (productId, productData) => {
     return response.data?.data;
 };
 
+/**
+ * Delete a product
+ * @param {string} productId
+ */
+export const deleteProduct = async (productId) => {
+    const response = await api.delete(`/products/${productId}`);
+    return response.data;
+};
+
 // ─── Constants ───────────────────────────────────────────────────────
 export const VARIANT_PRESETS = {
     SIZE: {
