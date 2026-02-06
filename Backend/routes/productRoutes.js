@@ -4,6 +4,7 @@ const {
     createProduct,
     getMenu,
     updateProduct,
+    deleteProduct,
 } = require("../controllers/productController");
 const validateRequest = require("../middleware/validateRequest");
 
@@ -71,6 +72,12 @@ router.post("/", productValidation, validateRequest, createProduct);
  */
 router.put("/:id", idValidation, productValidation, validateRequest, updateProduct);
 
+
+/**
+ * @route   DELETE /api/products/:id
+ * @desc    Delete a product
+ */
+router.delete("/:id", idValidation, validateRequest, deleteProduct);
 
 
 module.exports = router;
