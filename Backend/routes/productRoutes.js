@@ -3,6 +3,7 @@ const { body, param } = require("express-validator");
 const {
     createProduct,
     getMenu,
+    updateProduct,
 } = require("../controllers/productController");
 const validateRequest = require("../middleware/validateRequest");
 
@@ -62,6 +63,13 @@ router.get("/menu", getMenu);
  * @desc    Create a new product
  */
 router.post("/", productValidation, validateRequest, createProduct);
+
+
+/**
+ * @route   PUT /api/products/:id
+ * @desc    Update an existing product
+ */
+router.put("/:id", idValidation, productValidation, validateRequest, updateProduct);
 
 
 

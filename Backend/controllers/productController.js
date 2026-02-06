@@ -88,7 +88,48 @@ const getMenu = async (req, res, next) => {
 };
 
 
+/**
+ * @desc    Update an existing product
+ * @route   PUT /api/products/:id
+ * @access  Private/Admin
+ */
+const updateProduct = async (req, res, next) => {
+    try {
+        const { title, description, category, price, variants, image, isAvailable, displayOrder, tags } = req.body;
+
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        if (title !== undefined) product.title = title;
+        if (description !== undefined) product.description = description;
+        if (category !== undefined) product.category = category;
+        if (image !== undefined) product.image = image;
+        if (isAvailable !== undefined) product.isAvailable = isAvailable;
+        if (displayOrder !== undefined) product.displayOrder = displayOrder;
+        if (tags !== undefined) product.tags = tags;
+
+        // Handle pricing type switch
+        if (variants !== undefined && variants.length > 0) {
+            product.variants = variants;
+            product.price = null;
+        } else if (price !== undefined && price !== null) {
+            product.price = price;
+            product.variants = [];
+        }
+
+        await product.save();
+
+        return res.status(200).json({ success: true, data: product });
+    } catch (error) {
+        return next(error);
+    }
+};
+
+
 module.exports = {
     createProduct,
     getMenu,
+    updateProduct,
 };
