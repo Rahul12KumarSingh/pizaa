@@ -331,6 +331,14 @@ const CartPage = ({ onNavigateHome }) => {
                             >
                                 {status.loading ? "Processing..." : `Pay ₹${formattedTotal}`}
                             </button>
+
+                            <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <span className="text-amber-500 text-lg leading-none mt-0.5">⚠️</span>
+                                <p className="text-xs text-amber-800 font-medium leading-relaxed">
+                                    <strong>Dine-in / Pickup only:</strong> We do not offer home delivery.
+                                </p>
+                            </div>
+
                             <p className="text-xs text-slate-500 leading-relaxed text-center sm:text-left">
                                 By placing this order you agree to our
                                 <Link to="/terms-and-conditions" className="text-blue-600 font-semibold underline ml-1">

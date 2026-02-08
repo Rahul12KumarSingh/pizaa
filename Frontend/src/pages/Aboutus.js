@@ -34,7 +34,7 @@ const AboutUsPage = () => {
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4 text-lg">
               Santorini flavours was born from a simple idea in a small kitchen in
-              Kinshangarh (Rajasthan): to create the most delicious pizza using only the
+              Kishangarh (Rajasthan): to create the most delicious pizza using only the
               freshest, locally-sourced ingredients. What started as a family's
               passion project quickly grew into a beloved local eatery, known
               for its authentic taste and commitment to quality.
