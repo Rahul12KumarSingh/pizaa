@@ -59,35 +59,47 @@ const ContactUsPage = () => {
           {/* Contact Information */}
           <div className="space-y-10 flex flex-col justify-center">
             <h2 className="text-2xl font-bold text-blue-800 mb-2">Contact Information</h2>
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-100 text-blue-600 p-4 rounded-full shadow-md">
+            <a
+              href="https://www.google.com/maps/place/Santorini+Flavours/@26.6199611,74.8616877,17z/data=!3m1!4b1!4m6!3m5!1s0x396bf1ecf048eed5:0xca9f3198bf0b4f74!8m2!3d26.6199611!4d74.8642626!16s%2Fg%2F11yk87mm4v?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start space-x-4 group cursor-pointer"
+            >
+              <div className="bg-blue-100 text-blue-600 p-4 rounded-full shadow-md group-hover:bg-blue-200 transition-colors">
                 <MapPin size={28} />
               </div>
               <div>
-                <h3 className="font-semibold text-lg text-blue-900">Our Address</h3>
+                <h3 className="font-semibold text-lg text-blue-900 group-hover:underline">Our Address</h3>
                 <p className="text-blue-700">
                   Santorini Flavours, Shop No. 7, London Street, Moonland Bae, Snow Yard, Kishangarh (Rajasthan) - 305801
                 </p>
               </div>
-            </div>
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-100 text-blue-600 p-4 rounded-full shadow-md">
+            </a>
+
+            <a
+              href="tel:+918905191233"
+              className="flex items-start space-x-4 group cursor-pointer"
+            >
+              <div className="bg-blue-100 text-blue-600 p-4 rounded-full shadow-md group-hover:bg-blue-200 transition-colors">
                 <Phone size={28} />
               </div>
               <div>
-                <h3 className="font-semibold text-lg text-blue-900">Call Us</h3>
+                <h3 className="font-semibold text-lg text-blue-900 group-hover:underline">Call Us</h3>
                 <p className="text-blue-700">+91 8905191233</p>
               </div>
-            </div>
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-100 text-blue-600 p-4 rounded-full shadow-md">
+            </a>
+            <a
+              href="mailto:santoriniflavours@gmail.com"
+              className="flex items-start space-x-4 group cursor-pointer"
+            >
+              <div className="bg-blue-100 text-blue-600 p-4 rounded-full shadow-md group-hover:bg-blue-200 transition-colors">
                 <Mail size={28} />
               </div>
               <div>
-                <h3 className="font-semibold text-lg text-blue-900">Email Us</h3>
+                <h3 className="font-semibold text-lg text-blue-900 group-hover:underline">Email Us</h3>
                 <p className="text-blue-700">santoriniflavours@gmail.com</p>
               </div>
-            </div>
+            </a>
           </div>
 
           {/* Contact Form */}
