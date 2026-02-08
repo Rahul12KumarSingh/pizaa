@@ -140,6 +140,28 @@ const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCatego
                 60% { opacity: 1; }
                 100% { transform: translateX(0); opacity: 1; }
               }
+              .category-scrollbar {
+                overflow-x: scroll !important;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: auto;
+                scrollbar-color: #94a3b8 #e2e8f0;
+              }
+              .category-scrollbar::-webkit-scrollbar {
+                height: 6px;
+                display: block !important;
+              }
+              .category-scrollbar::-webkit-scrollbar-track {
+                background: #e2e8f0;
+                border-radius: 999px;
+              }
+              .category-scrollbar::-webkit-scrollbar-thumb {
+                background: #94a3b8;
+                border-radius: 999px;
+                min-width: 40px;
+              }
+              .category-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #64748b;
+              }
             `}</style>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
               Hot, fresh, and local pizza delivered from your neighborhood shops.
@@ -186,30 +208,32 @@ const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCatego
           </div>
         </div>
 
-        {/* Category Tabs - horizontal scroll, mobile friendly */}
+        {/* Category Tabs - horizontal scroll, mobile friendly, sticky below navbar */}
         {status === "succeeded" && categories.length > 0 && (
-          <div className="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide snap-x">
-            <button
-              onClick={() => onCategorySelect(null)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition snap-start ${!selectedCategory
-                ? "bg-blue-600 text-white shadow"
-                : "bg-white text-slate-600 border border-slate-200 hover:border-blue-200"
-                }`}
-            >
-              All
-            </button>
-            {categories.map((category) => (
+          <div className="sticky top-16 z-40 bg-slate-50/95 backdrop-blur-sm pt-3 pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6 shadow-sm border-b border-slate-200">
+            <div className="flex gap-2 overflow-x-scroll pb-2 snap-x category-scrollbar">
               <button
-                key={category.id}
-                onClick={() => onCategorySelect(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition snap-start ${selectedCategory === category.id
+                onClick={() => onCategorySelect(null)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition snap-start ${!selectedCategory
                   ? "bg-blue-600 text-white shadow"
                   : "bg-white text-slate-600 border border-slate-200 hover:border-blue-200"
                   }`}
               >
-                {category.name}
+                All
               </button>
-            ))}
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => onCategorySelect(category.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition snap-start ${selectedCategory === category.id
+                    ? "bg-blue-600 text-white shadow"
+                    : "bg-white text-slate-600 border border-slate-200 hover:border-blue-200"
+                    }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
