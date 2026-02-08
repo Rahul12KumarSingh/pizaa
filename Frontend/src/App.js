@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -119,6 +119,7 @@ const HomeView = ({ menuData, status, error, onRetry, selectedCategory, onCatego
 
   return (
     <div className="space-y-10 pb-12">
+
       <section className="relative bg-gradient-to-b from-blue-700 via-blue-600 to-blue-400 text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col gap-8">
           <div className="space-y-4">
@@ -257,10 +258,22 @@ const App = () => {
   const error = useSelector(selectProductError);
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const initialCategorySet = useRef(false);
 
   useEffect(() => {
     dispatch(fetchProductsRequest());
   }, [dispatch]);
+
+  // Default to Pizza category on initial load
+  useEffect(() => {
+    if (Array.isArray(menuData) && menuData.length > 0 && !initialCategorySet.current) {
+      const pizzaCategory = menuData.find((cat) => cat.categoryName === "Pizza");
+      if (pizzaCategory) {
+        setSelectedCategory(pizzaCategory.categoryId);
+      }
+      initialCategorySet.current = true;
+    }
+  }, [menuData]);
 
   const homeElement = (
     <HomeView
